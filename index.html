@@ -57,6 +57,9 @@
 /* Enquadramento */
 .code-tag{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;font-weight:800;color:#126a64;background:var(--teal-light);border-radius:6px;padding:3px 7px;margin-right:7px;white-space:nowrap}.opt{border:1px dashed #cfdbe0;border-radius:10px;padding:12px 13px;margin-top:11px;background:#fbfdfd}.opt-cond{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#7b8c97;margin-bottom:6px}.opt-title{font-size:12px;line-height:1.5;color:#2f4655}.pot-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.pot{font-size:10px;font-weight:800;border-radius:6px;padding:4px 7px;background:#eef2f4;color:#5d6f7d}.pot.G{background:var(--red-bg);color:var(--red)}.pot.M{background:var(--amber-bg);color:var(--amber)}.pot.P{background:var(--green-bg);color:var(--green)}.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 16px;margin-top:11px;font-size:12px}.kv span{display:block;color:#8796a0;font-size:10px;text-transform:uppercase;letter-spacing:.6px;font-weight:800}.kv b{display:block;margin-top:2px;color:#2f4655;font-weight:700}.kv .full{grid-column:1/-1}.band-text{font-size:11px;color:#84939d;margin-top:9px}.pend-list{margin:10px 0 0;padding-left:18px;color:#8a5a12;font-size:12px;line-height:1.55}.req-note{font-size:11.5px;color:#5c707d;background:#f4f8f9;border-radius:8px;padding:8px 10px;margin-top:10px}.area-total{font-size:12px;color:#355260;background:#f1f7f7;border:1px solid #d9eae7;border-radius:9px;padding:11px 13px;margin-top:16px}.toggle-row input{width:120px;max-width:40%;border:1px solid #d8e1e6;border-radius:8px;padding:8px;background:white;color:#304755;font-size:12px}.toggle-row.sub{background:#fafcfc;border-style:dashed}[aria-invalid]{border-color:#bf6158!important;background:#fff6f5!important}.info-list{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:12px;color:#5c707d}.info-list b{color:#354c5a}
 .results-layout>*,.requirement-top>div{min-width:0}
+.check-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.check{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:12px;color:#354c5a;cursor:pointer}.check:has(input:checked){border-color:#54a49d;background:#f1faf8}.check input{accent-color:var(--teal);margin:2px 0 0}.field .check{font-weight:500;margin:0;color:#354c5a}.field .check input{width:auto;min-height:0;padding:0;flex-shrink:0;box-shadow:none}.status.probable{color:#80540b;background:#fffaf0;border:1px dashed #d9b46a}.status.consult{color:#4b4f8a;background:#eef0fb}.stat.consult strong{color:#4b4f8a}
+@media(max-width:1050px){.check-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.check-grid{grid-template-columns:1fr}}
 @media(max-width:720px){.kv{grid-template-columns:1fr}.requirement-top .status{white-space:normal;text-align:right;max-width:46%}}
 @media print{body{background:white}.topbar,.sidebar,.mobile-stepper,.top-actions,.footer-nav,.notice .notice-icon,.no-print{display:none!important}.layout{display:block}.main{padding:0;max-width:none}.card,.result-card,.stat,.result-hero{box-shadow:none;break-inside:avoid}.result-hero{background:#173642!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.results-layout{grid-template-columns:1.3fr .7fr}.case-footer{margin-top:10px}}
 </style>
@@ -74,7 +77,7 @@
         <button class="step-link active" data-step-link="1"><span class="step-no">01</span><span class="step-text"><strong>Empresa</strong><small>Identificação e situação</small></span></button>
         <button class="step-link" data-step-link="2"><span class="step-no">02</span><span class="step-text"><strong>Estabelecimento</strong><small>Local, área útil e esgoto</small></span></button>
         <button class="step-link" data-step-link="3"><span class="step-no">03</span><span class="step-text"><strong>Operação</strong><small>Atividades e processos</small></span></button>
-        <button class="step-link" data-step-link="4"><span class="step-no">04</span><span class="step-text"><strong>Orçamento</strong><small>Documentos · opcional</small></span></button>
+        <button class="step-link" data-step-link="4"><span class="step-no">04</span><span class="step-text"><strong>Documentos</strong><small>Disponíveis · opcional</small></span></button>
         <button class="step-link" data-step-link="5"><span class="step-no">05</span><span class="step-text"><strong>Enquadramento</strong><small>Resultado ambiental</small></span></button>
       </nav>
       <div class="side-note"><b>Importante</b>O enquadramento depende da atividade e da operação, não dos documentos da empresa. Este protótipo usa uma base piloto das Resoluções CONSEMA 250/2024 e 251/2024 e não consulta o SinFAT.<br><br><a href="https://www.legisweb.com.br/legislacao/?id=463083" target="_blank" rel="noopener">Resolução CONSEMA 250/2024 ↗</a></div>
@@ -95,15 +98,28 @@
           <div class="card-head"><div><h2>Identificação da empresa</h2><p>Natureza jurídica e porte fiscal (MEI, ME, EPP) não entram no enquadramento ambiental.</p></div><span class="section-tag">Obrigatório*</span></div>
           <div class="card-body"><div class="grid">
             <div class="field full"><label for="companyName">Razão social ou nome de referência *</label><input id="companyName" name="companyName" placeholder="Ex.: Serralheria Costa Azul Ltda." required /></div>
-            <div class="field"><label for="cnpj">CNPJ <span class="optional">(opcional)</span></label><input id="cnpj" name="cnpj" inputmode="numeric" placeholder="00.000.000/0000-00" /></div>
-            <div class="field"><label for="municipality">Município do estabelecimento *</label><select id="municipality" name="municipality" required><option value="">Selecione o município</option><option value="Balneário Camboriú">Balneário Camboriú</option><option value="Itajaí">Itajaí</option><option value="Camboriú">Camboriú</option></select><div class="helper">Define o órgão ambiental municipal: SEMAM, FAMAI ou FUCAM.</div></div>
+            <div class="field"><label for="cnpj">CNPJ <span id="cnpjReq">*</span></label><input id="cnpj" name="cnpj" class="cnpj-input" inputmode="numeric" placeholder="00.000.000/0000-00" /><div class="helper" id="cnpjHelper">Usado para conferir os CNAEs cadastrados com a operação descrita.</div></div>
+            <div class="field"><label for="municipality">Município do estabelecimento *</label><select id="municipality" name="municipality" required><option value="">Selecione o município</option><option value="Balneário Camboriú">Balneário Camboriú</option><option value="Itajaí">Itajaí</option><option value="Camboriú">Camboriú</option></select><div class="helper">Ajuda a definir o órgão licenciador, que pode ser o municipal (SEMAM, FAMAI ou FUCAM) ou o IMA, conforme a atividade e o porte.</div></div>
           </div></div>
         </div>
         <div class="card"><div class="card-head"><div><h2>Situação da operação</h2><p>Não muda o código da atividade, mas muda o caminho do processo.</p></div></div><div class="card-body"><div class="choice-grid">
-          <label class="choice"><input type="radio" name="operationStatus" value="new" checked><span><strong>Ainda vai instalar ou iniciar</strong><small>Licenciamento antes de instalar e operar</small></span></label>
-          <label class="choice"><input type="radio" name="operationStatus" value="unlicensed"><span><strong>Já opera sem licença ambiental</strong><small>Caminho de regularização (LAO com ECA)</small></span></label>
-          <label class="choice"><input type="radio" name="operationStatus" value="licensed"><span><strong>Já tem licença e vai ampliar, alterar ou renovar</strong><small>Verificar se muda porte, potencial ou estudo</small></span></label>
+          <label class="choice"><input type="radio" name="operationStatus" value="viability"><span><strong>Quero saber se posso instalar uma atividade num terreno ou imóvel</strong><small>Viabilidade ambiental da área, antes de decidir</small></span></label>
+          <label class="choice"><input type="radio" name="operationStatus" value="install" checked><span><strong>Vai instalar</strong><small>Com obra ou implantação de estrutura nova</small></span></label>
+          <label class="choice"><input type="radio" name="operationStatus" value="start"><span><strong>Vai iniciar a operação</strong><small>Em imóvel já pronto, sem obra</small></span></label>
+          <label class="choice"><input type="radio" name="operationStatus" value="licensed"><span><strong>Já tem licença ambiental</strong><small>Vai ampliar, alterar ou renovar</small></span></label>
+          <label class="choice"><input type="radio" name="operationStatus" value="unlicensed"><span><strong>Já opera sem licença ambiental</strong><small>Regularização: o caminho é definido com o órgão ambiental</small></span></label>
+          <label class="choice"><input type="radio" name="operationStatus" value="other"><span><strong>Outra situação</strong><small>Descreva abaixo</small></span></label>
           <label class="choice"><input type="radio" name="operationStatus" value="unsure"><span><strong>Não sei</strong><small>O resultado mostra os caminhos possíveis</small></span></label>
+        </div>
+        <div class="field full" data-show-when="operationStatus:other" style="margin-top:14px"><label for="operationOther">Descreva a situação</label><textarea id="operationOther" name="operationOther" placeholder="Ex.: comprou uma empresa que já operava, mudou de endereço, recebeu notificação do órgão..."></textarea></div>
+        </div></div>
+        <div class="card" data-show-when="operationStatus:licensed"><div class="card-head"><div><h2>Licença ambiental existente</h2><p>Cada caso pede dados diferentes. A licença existente não muda o código da atividade.</p></div></div><div class="card-body"><div class="grid three">
+          <div class="field"><label for="licenseAction">O que vai fazer?</label><select id="licenseAction" name="licenseAction"><option value="">Selecione</option><option value="expand">Ampliar</option><option value="alter">Alterar</option><option value="renew">Renovar</option></select></div>
+          <div class="field"><label for="licenseType">Tipo de licença</label><select id="licenseType" name="licenseType"><option value="">Selecione</option><option value="LAO">LAO</option><option value="AuA">AuA</option><option value="LAC">LAC</option><option value="LAP/LAI">LAP / LAI</option><option value="CCA">CCA</option><option value="DANC">DANC</option></select></div>
+          <div class="field"><label for="licenseOrgan">Órgão emissor</label><select id="licenseOrgan" name="licenseOrgan"><option value="">Selecione</option><option value="FAMAI">FAMAI (Itajaí)</option><option value="SEMAM">SEMAM (Balneário Camboriú)</option><option value="FUCAM">FUCAM (Camboriú)</option><option value="IMA">IMA</option><option value="outro">Outro</option></select></div>
+          <div class="field"><label for="licenseNumber">Número</label><input id="licenseNumber" name="licenseNumber" placeholder="Nº da licença" /></div>
+          <div class="field"><label for="licenseExpiry">Validade</label><input id="licenseExpiry" name="licenseExpiry" type="date" /></div>
+          <div class="field full" data-show-when="licenseAction:expand|alter"><label for="licenseChange">O que vai mudar?</label><textarea id="licenseChange" name="licenseChange" placeholder="Ex.: aumento da área, nova atividade, novo processo (pintura), mudança de razão social..."></textarea><div class="helper">Mudança de porte, parâmetro ou estudo muda o tipo de pedido (art. 11 da Res. CONSEMA 250/2024).</div></div>
         </div></div></div>
       </section>
 
@@ -111,9 +127,22 @@
         <div class="card"><div class="card-head"><div><h2>Local e imóvel</h2><p>Onde a atividade é exercida e em que tipo de imóvel.</p></div><span class="section-tag">Localização</span></div><div class="card-body"><div class="grid">
           <div class="field full"><label for="address">Endereço do estabelecimento *</label><input id="address" name="address" placeholder="Rua, número, complemento e bairro" required /></div>
           <div class="field"><label for="postalCode">CEP <span class="optional">(opcional)</span></label><input id="postalCode" name="postalCode" placeholder="00000-000" inputmode="numeric" /></div>
-          <div class="field"><label for="unitType">Tipo de unidade</label><select id="unitType" name="unitType"><option value="">Selecione</option><option value="industria">Indústria / fabricação</option><option value="alimentos">Produção de alimentos ou bebidas</option><option value="oficina">Oficina / manutenção / reparação</option><option value="saude">Saúde, laboratório ou veterinária</option><option value="hospedagem">Hotelaria / hospedagem</option><option value="deposito">Depósito / armazenamento</option><option value="comercio">Comércio (loja)</option><option value="escritorio">Escritório / serviço sem processo produtivo</option><option value="outro">Outro / não sei</option></select><div class="helper">Categorias próximas dos grupos da lista CONSEMA.</div></div>
-          <div class="field"><label for="propertyUse">Situação do imóvel</label><select id="propertyUse" name="propertyUse"><option value="">Selecione</option><option value="own">Próprio</option><option value="rented">Alugado</option><option value="other">Outro (cedido, comodato) / não sei</option></select><div class="helper">Define o documento do imóvel anexado ao processo.</div></div>
-          <div class="field"><label for="sharedArea">Divide o espaço com outra empresa?</label><select id="sharedArea" name="sharedArea"><option value="unknown">Não sei</option><option value="no">Não</option><option value="yes">Sim</option></select><div class="helper">Em área compartilhada, as áreas são somadas no enquadramento.</div></div>
+          <div class="field full"><span class="field-label">Tipo de unidade <span class="optional">(marque todos que existem no local)</span></span><div class="check-grid">
+            <label class="check"><input type="checkbox" name="unitType" value="industria"> Indústria / fabricação</label>
+            <label class="check"><input type="checkbox" name="unitType" value="alimentos"> Produção de alimentos ou bebidas</label>
+            <label class="check"><input type="checkbox" name="unitType" value="oficina"> Oficina / manutenção / reparação</label>
+            <label class="check"><input type="checkbox" name="unitType" value="saude"> Saúde, laboratório ou veterinária</label>
+            <label class="check"><input type="checkbox" name="unitType" value="hospedagem"> Hotelaria / hospedagem</label>
+            <label class="check"><input type="checkbox" name="unitType" value="deposito"> Depósito / armazenamento</label>
+            <label class="check"><input type="checkbox" name="unitType" value="comercio"> Comércio (loja)</label>
+            <label class="check"><input type="checkbox" name="unitType" value="escritorio"> Escritório / serviço sem processo produtivo</label>
+            <label class="check"><input type="checkbox" name="unitType" value="outro"> Outro</label>
+          </div><div class="helper">Ajuda a ver se há mais de um tipo de operação no mesmo local.</div></div>
+          <div class="field full" data-show-when="unitType:outro"><label for="unitTypeOther">Qual outro tipo de unidade?</label><input id="unitTypeOther" name="unitTypeOther" placeholder="Descreva" /></div>
+          <div class="field"><label for="propertyUse">Situação do imóvel</label><select id="propertyUse" name="propertyUse"><option value="">Selecione</option><option value="own">Próprio</option><option value="rented">Alugado</option><option value="other">Outro</option><option value="unknown">Não sei</option></select><div class="helper">Define o documento do imóvel anexado ao processo.</div></div>
+          <div class="field" data-show-when="propertyUse:other"><label for="propertyOther">Qual a situação do imóvel?</label><input id="propertyOther" name="propertyOther" placeholder="Ex.: cedido, comodato, de familiar..." /></div>
+          <div class="field"><label for="sharedArea">Divide o terreno ou o endereço com outra empresa?</label><select id="sharedArea" name="sharedArea"><option value="unknown">Não sei</option><option value="no">Não</option><option value="yes">Sim</option></select><div class="helper">Outra empresa, de outro dono, no mesmo espaço. Em área compartilhada, as áreas são somadas no enquadramento.</div></div>
+          <div class="field"><label for="multiCnpj">Há mais de um CNPJ funcionando neste local?</label><select id="multiCnpj" name="multiCnpj"><option value="unknown">Não sei</option><option value="no">Não</option><option value="yes">Sim</option></select><div class="helper">Ex.: o mesmo dono com duas empresas no terreno. Os outros CNPJs são informados na etapa 03.</div></div>
           <div class="field"><label for="fixedPlace">Onde a atividade é exercida?</label><select id="fixedPlace" name="fixedPlace"><option value="unknown">Não sei / preciso confirmar</option><option value="fixed">Só no endereço fixo</option><option value="both">No endereço fixo e também no cliente</option><option value="external">Só externamente (no cliente / em obra)</option></select></div>
           <div class="field"><label for="floors">Pavimentos utilizados <span class="optional">(opcional)</span></label><select id="floors" name="floors"><option value="">Não sei</option><option value="1">1 pavimento</option><option value="2">2 pavimentos</option><option value="3+">3 ou mais</option></select></div>
           <div class="field full"><label for="addressNotes">Observações sobre o imóvel <span class="optional">(opcional)</span></label><textarea id="addressNotes" name="addressNotes" placeholder="Ex.: galpão em condomínio industrial, terreno com pátio de manobra..."></textarea></div>
@@ -128,7 +157,8 @@
         </div><div class="area-total" id="areaTotal"></div></div></div>
         <div class="card"><div class="card-head"><div><h2>Esgoto do imóvel</h2><p>Muda o enquadramento de hotelaria e condomínios e as exigências do processo.</p></div></div><div class="card-body"><div class="grid">
           <div class="field"><label for="sewerNetwork">Passa rede coletora de esgoto na rua?</label><select id="sewerNetwork" name="sewerNetwork"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
-          <div class="field"><label for="sewageTreatment">Para onde vai o esgoto do imóvel?</label><select id="sewageTreatment" name="sewageTreatment"><option value="unknown">Não sei</option><option value="public">Rede pública com tratamento</option><option value="septicFilter">Fossa séptica e filtro</option><option value="septic">Só fossa</option><option value="own">Estação de tratamento própria</option><option value="other">Outro</option></select></div>
+          <div class="field"><label for="sewageTreatment">Para onde vai o esgoto do imóvel?</label><select id="sewageTreatment" name="sewageTreatment"><option value="unknown">Não sei</option><option value="public">Rede pública com tratamento</option><option value="individual">Sistema individual de tratamento</option><option value="septic">Só fossa, sem filtro</option><option value="other">Outro</option></select><div class="helper">Sistema individual: fossa séptica e filtro, ou estação de tratamento própria.</div></div>
+          <div class="field" data-show-when="sewageTreatment:individual|septic"><label for="sewageProject">O sistema individual tem projeto?</label><select id="sewageProject" name="sewageProject"><option value="unknown">Não sei</option><option value="approved">Tem projeto aprovado</option><option value="notApproved">Tem projeto, sem aprovação</option><option value="no">Não tem projeto</option></select><div class="helper">Sistemas sem projeto são uma fonte comum de irregularidade no processo.</div></div>
         </div></div></div>
       </section>
 
@@ -136,20 +166,41 @@
         <div class="card"><div class="card-head"><div><h2>Atividades econômicas</h2><p>Todos os CNAEs são analisados. Comércio não entra no enquadramento; a fabricação costuma estar no CNAE secundário.</p></div><span class="section-tag">CNAE</span></div><div class="card-body"><div class="grid">
           <div class="field"><label for="mainCnae">CNAE principal *</label><input id="mainCnae" name="mainCnae" placeholder="Ex.: 2542-0/00 — Artigos de serralheria" required /><div class="helper">Informe o código completo, com 7 dígitos.</div></div>
           <div class="field"><label for="otherCnaes">CNAEs secundários</label><textarea id="otherCnaes" name="otherCnaes" placeholder="Um por linha"></textarea><div class="helper">Omitir um CNAE pode esconder uma atividade licenciável.</div></div>
-          <div class="field full"><label for="activityDescription">O que a empresa realmente faz? *</label><textarea id="activityDescription" name="activityDescription" placeholder="Descreva o processo: o que é produzido, transformado ou consertado no local, e como." required></textarea><div class="helper">A descrição também é usada para encontrar atividades que o CNAE não mostra.</div></div>
-          <div class="field full"><label for="equipment">Quais máquinas e equipamentos são usados? <span class="optional">(se houver)</span></label><textarea id="equipment" name="equipment" placeholder="Ex.: máquina de solda, policorte, compressor, pistola de pintura, forno, caldeira..."></textarea></div>
-        </div><div class="divider"></div><h3 class="subhead">Processos e características da operação</h3><p class="helper" style="margin:-6px 0 14px">Responda sim ou não sempre que possível: cada resposta elimina ou confirma enquadramentos. “Não sei” mantém as alternativas em aberto.</p><div class="toggle-list">
+          <div class="field full"><label for="activityDescription">Descreva o dia a dia da operação *</label><textarea id="activityDescription" name="activityDescription" placeholder="Como a matéria-prima ou o produto chega, o que é feito com ele no local, como sai e o que sobra do processo. Ex.: recebemos chapas de aço, cortamos, soldamos e pintamos portões; as sobras de metal vão para a reciclagem." required></textarea><div class="helper">Quanto mais completa, melhor: a descrição também é usada para encontrar atividades que o CNAE não mostra.</div></div>
+          <div class="field"><label for="hasEquipment">Usa alguma máquina ou equipamento na operação?</label><select id="hasEquipment" name="hasEquipment"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
+          <div class="field full" data-show-when="hasEquipment:yes"><label for="equipment">Quais máquinas e equipamentos são usados no local?</label><textarea id="equipment" name="equipment" placeholder="Ex.: máquina de solda, policorte, compressor, pistola de pintura, forno, caldeira..."></textarea></div>
+        </div></div></div>
+        <div class="card" data-show-when="multiCnpj:yes"><div class="card-head"><div><h2>Outros CNPJs no mesmo local</h2><p>Cada CNPJ tem processo próprio, vinculado aos demais (art. 10 da Res. CONSEMA 250/2024). Informe as atividades de cada um.</p></div><span class="section-tag">CNPJ</span></div><div class="card-body">
+          <input type="hidden" id="extraCnpjCount" name="extraCnpjCount" value="1" />
+          <div class="extra-cnpj"><h3 class="subhead">CNPJ 2</h3><div class="grid">
+            <div class="field"><label for="extraCnpj1">CNPJ</label><input id="extraCnpj1" name="extraCnpj1" class="cnpj-input" inputmode="numeric" placeholder="00.000.000/0000-00" /></div>
+            <div class="field"><label for="extraName1">Razão social ou nome</label><input id="extraName1" name="extraName1" /></div>
+            <div class="field full"><label for="extraCnaes1">CNAEs deste CNPJ</label><textarea id="extraCnaes1" name="extraCnaes1" placeholder="Um por linha. Ex.: 2542-0/00"></textarea></div>
+          </div></div>
+          <div class="extra-cnpj" data-show-when="extraCnpjCount:2|3"><div class="divider"></div><h3 class="subhead">CNPJ 3</h3><div class="grid">
+            <div class="field"><label for="extraCnpj2">CNPJ</label><input id="extraCnpj2" name="extraCnpj2" class="cnpj-input" inputmode="numeric" placeholder="00.000.000/0000-00" /></div>
+            <div class="field"><label for="extraName2">Razão social ou nome</label><input id="extraName2" name="extraName2" /></div>
+            <div class="field full"><label for="extraCnaes2">CNAEs deste CNPJ</label><textarea id="extraCnaes2" name="extraCnaes2" placeholder="Um por linha"></textarea></div>
+          </div></div>
+          <div class="extra-cnpj" data-show-when="extraCnpjCount:3"><div class="divider"></div><h3 class="subhead">CNPJ 4</h3><div class="grid">
+            <div class="field"><label for="extraCnpj3">CNPJ</label><input id="extraCnpj3" name="extraCnpj3" class="cnpj-input" inputmode="numeric" placeholder="00.000.000/0000-00" /></div>
+            <div class="field"><label for="extraName3">Razão social ou nome</label><input id="extraName3" name="extraName3" /></div>
+            <div class="field full"><label for="extraCnaes3">CNAEs deste CNPJ</label><textarea id="extraCnaes3" name="extraCnaes3" placeholder="Um por linha"></textarea></div>
+          </div></div>
+          <button type="button" class="btn" id="addCnpjBtn" style="margin-top:14px">+ Adicionar outro CNPJ</button>
+        </div></div>
+        <div class="card"><div class="card-head"><div><h2>Processos e características da operação</h2><p>A parte que filtra o enquadramento.</p></div></div><div class="card-body"><p class="helper" style="margin:0 0 14px">Responda sim ou não sempre que possível: cada resposta elimina ou confirma enquadramentos. “Não sei” mantém as alternativas em aberto.</p><div class="toggle-list">
           <div class="toggle-row"><div><label for="production"><strong>Fabrica, transforma, monta ou conserta produtos?</strong></label><small>Ex.: produção, oficina, marcenaria, serralheria.</small></div><select id="production" name="production"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
           <div class="toggle-row"><div><label for="painting"><strong>Faz pintura por aspersão, esmaltação ou imersão?</strong></label><small>Pintura com pistola, cabine de pintura, banho de tinta.</small></div><select id="painting" name="painting"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
           <div class="toggle-row"><div><label for="chemTreatment"><strong>Faz tratamento químico de superfície?</strong></label><small>Galvanoplastia, zincagem, cromagem, decapagem, fosfatização.</small></div><select id="chemTreatment" name="chemTreatment"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
+          <div class="toggle-row sub" data-show-when="chemTreatment:yes"><div><label for="chemTreatmentType"><strong>Qual tratamento químico?</strong></label><small>O tipo de tratamento pode levar a itens diferentes da lista.</small></div><select id="chemTreatmentType" name="chemTreatmentType"><option value="">Selecione</option><option value="galvanoplastia">Galvanoplastia</option><option value="cromagem">Cromagem</option><option value="zincagem">Zincagem</option><option value="anodizacao">Anodização</option><option value="fosfatizacao">Fosfatização</option><option value="decapagem">Decapagem</option><option value="outro">Outro</option></select></div>
           <div class="toggle-row"><div><label for="heatProcess"><strong>Usa forno, caldeira ou fundição no processo?</strong></label><small>Também queima de combustível ou chama no processo.</small></div><select id="heatProcess" name="heatProcess"><option value="unknown">Não sei</option><option value="no">Não</option><option value="heat">Sim, forno ou caldeira</option><option value="foundry">Sim, fundição de metais</option></select></div>
-          <div class="toggle-row"><div><label for="emission"><strong>Gera emissão atmosférica?</strong></label><small>Fumaça, pó, vapores ou odor saindo do processo.</small></div><select id="emission" name="emission"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
-          <div class="toggle-row"><div><label for="noise"><strong>Gera ruído relevante?</strong></label><small>Não muda o código, mas entra no estudo e nos controles.</small></div><select id="noise" name="noise"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
+          <div class="toggle-row"><div><label for="emission"><strong>Algum processo gera poeira, pó, fumaça, vapor ou cheiro forte?</strong></label><small>Emissão atmosférica: inclui o material particulado de corte, lixamento, solda, pintura ou queima.</small></div><select id="emission" name="emission"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
           <div class="toggle-row"><div><label for="animals"><strong>Tem atividade com animais?</strong></label><small>Clínica ou hospital veterinário, criação, abate.</small></div><select id="animals" name="animals"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
           <div class="toggle-row sub" data-show-when="animals:yes"><div><label for="animalType"><strong>Qual atividade com animais?</strong></label><small>Hospitais veterinários e abate têm códigos próprios.</small></div><select id="animalType" name="animalType"><option value="">Selecione</option><option value="hospital">Hospital veterinário (com internação)</option><option value="clinica">Clínica ou consultório</option><option value="petshop">Pet shop, banho e tosa</option><option value="criacao">Criação de animais</option><option value="abate">Abate ou processamento</option><option value="outro">Outra</option></select></div>
           <div class="toggle-row"><div><label for="food"><strong>Manipula ou fabrica alimentos?</strong></label><small>Sem alimentos, os códigos de alimentos são excluídos.</small></div><select id="food" name="food"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
           <div class="toggle-row sub" data-show-when="food:yes"><div><label for="foodType"><strong>Qual tipo de alimento?</strong></label><small>Cada tipo tem um código e uma faixa de porte.</small></div><select id="foodType" name="foodType"><option value="">Selecione</option><option value="animal">Origem animal (carnes, embutidos)</option><option value="vegetal">Origem vegetal (conservas, polpas)</option><option value="laticinios">Leite e laticínios</option><option value="pescado">Pescado</option><option value="sorvete">Sorvetes e gelados</option><option value="panificacao">Panificação, confeitaria, massas</option><option value="bebidas">Bebidas</option><option value="racao">Ração animal</option><option value="refeicoes">Refeições (restaurante, marmitas)</option><option value="outros">Outros alimentos</option></select></div>
-          <div class="toggle-row"><div><label for="effluent"><strong>Gera efluente líquido de processo?</strong></label><small>Lavagem de peças, pisos ou tanques; água usada no processo.</small></div><select id="effluent" name="effluent"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
+          <div class="toggle-row"><div><label for="effluent"><strong>Gera efluente líquido no processo produtivo?</strong></label><small>Não conta o esgoto de banheiro e cozinha. Ex.: lavagem de peças, água de corte, banhos de tratamento.</small></div><select id="effluent" name="effluent"><option value="unknown">Não sei</option><option value="no">Não</option><option value="chemical">Sim, com produto químico (efluente industrial)</option><option value="nochem">Sim, sem produto químico (ex.: água de corte de marmoraria)</option></select></div>
           <div class="toggle-row"><div><label for="washing"><strong>Tem lavanderia, tinturaria ou estamparia com lavagem?</strong></label><small>Sublimação ou impressão digital sem lavagem não contam.</small></div><select id="washing" name="washing"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
           <div class="toggle-row"><div><label for="hazWaste"><strong>Gera resíduos perigosos?</strong></label><small>Óleo, solvente, borra de tinta, embalagens contaminadas.</small></div><select id="hazWaste" name="hazWaste"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
           <div class="toggle-row"><div><label for="fuelStorage"><strong>Armazena combustível em tanque?</strong></label><small>Para venda ou consumo próprio.</small></div><select id="fuelStorage" name="fuelStorage"><option value="unknown">Não sei</option><option value="no">Não</option><option value="aerial">Sim, tanque aéreo</option><option value="underground">Sim, tanque subterrâneo</option></select></div>
@@ -157,21 +208,30 @@
           <div class="toggle-row"><div><label for="chemStorage"><strong>Armazena produtos químicos perigosos ou agrotóxicos?</strong></label><small>Inflamáveis, corrosivos, tóxicos, agrotóxicos, lubrificantes.</small></div><select id="chemStorage" name="chemStorage"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
           <div class="toggle-row sub" data-show-when="chemStorage:yes"><div><label for="chemType"><strong>Qual produto é armazenado?</strong></label><small>Define o código de depósito.</small></div><select id="chemType" name="chemType"><option value="">Selecione</option><option value="perigosos">Produtos químicos perigosos</option><option value="agrotoxicos">Agrotóxicos</option><option value="combustiveis">Combustíveis e lubrificantes (atacado)</option></select></div>
           <div class="toggle-row sub" data-show-when="chemStorage:yes"><div><label for="chemArea"><strong>Área do depósito (m²)</strong></label><small>Parâmetro de porte dos depósitos, AD.</small></div><input id="chemArea" name="chemArea" type="text" inputmode="decimal" autocomplete="off" placeholder="m²" /></div>
+          <div class="toggle-row"><div><label for="chemHandling"><strong>Manipula produto químico no local?</strong></label><small>Fracionar (trocar de embalagem), misturar, diluir ou transformar. É diferente de só armazenar e repassar ao cliente.</small></div><select id="chemHandling" name="chemHandling"><option value="unknown">Não sei</option><option value="yes">Sim</option><option value="no">Não</option></select></div>
+          <div class="toggle-row sub" data-show-when="chemHandling:yes"><div><label for="chemHandlingType"><strong>Como o produto é manipulado?</strong></label><small>Cada caso tem outro tipo de enquadramento.</small></div><select id="chemHandlingType" name="chemHandlingType"><option value="">Selecione</option><option value="fracionamento">Fracionamento (troca de embalagem)</option><option value="mistura">Mistura ou diluição</option><option value="formulacao">Formulação de produto novo</option><option value="outro">Outro</option></select></div>
           <div class="toggle-row"><div><label for="health"><strong>É uma atividade de saúde?</strong></label><small>Só hospitais e laboratórios de análises estão na lista.</small></div><select id="health" name="health"><option value="unknown">Não sei</option><option value="no">Não</option><option value="hospital">Hospital ou maternidade</option><option value="lab">Laboratório de análises</option><option value="clinic">Clínica, consultório ou estética</option></select></div>
           <div class="toggle-row sub" data-show-when="health:hospital;unitType:hospedagem"><div><label for="beds"><strong>Número de leitos</strong></label><small>Parâmetro de porte de hospitais e hotelaria, NL.</small></div><input id="beds" name="beds" type="text" inputmode="numeric" autocomplete="off" placeholder="leitos" /></div>
+          <div class="toggle-row sub" data-param="NV"><div><label for="vehicles"><strong>Número de veículos de coleta</strong></label><small>Parâmetro de porte do transporte de efluentes, NV. Aparece porque uma atividade identificada usa este parâmetro.</small></div><input id="vehicles" name="vehicles" type="text" inputmode="numeric" autocomplete="off" placeholder="veículos" /></div>
+          <div class="toggle-row sub" data-param="QMR"><div><label for="wasteMonthly"><strong>Resíduos recebidos por mês (t/mês)</strong></label><small>Parâmetro de porte da reciclagem, QMR. Aparece porque uma atividade identificada usa este parâmetro.</small></div><input id="wasteMonthly" name="wasteMonthly" type="text" inputmode="decimal" autocomplete="off" placeholder="t/mês" /></div>
         </div></div></div>
       </section>
 
       <section class="step-panel hidden" data-panel="4">
-        <div class="card"><div class="card-head"><div><h2>Preparação para orçamento</h2><p>Estes itens não mudam o enquadramento. Servem para a fase seguinte: montar o orçamento e o processo.</p></div><span class="section-tag">Opcional</span></div><div class="card-body"><div class="grid">
-          <div class="field"><label for="archProject">Projeto arquitetônico</label><select id="archProject" name="archProject"><option value="unknown">Não sei</option><option value="yes">Tem</option><option value="progress">Em elaboração</option><option value="no">Não tem</option></select></div>
-          <div class="field"><label for="hydroProject">Projeto hidrossanitário</label><select id="hydroProject" name="hydroProject"><option value="unknown">Não sei</option><option value="yes">Tem</option><option value="progress">Em elaboração</option><option value="no">Não tem</option></select></div>
-          <div class="field full"><label for="extraDocs">Outros documentos disponíveis <span class="optional">(opcional)</span></label><textarea id="extraDocs" name="extraDocs" placeholder="Ex.: matrícula do imóvel, contrato de locação, laudos, responsável técnico..."></textarea></div>
+        <div class="notice" style="margin-bottom:16px"><span class="notice-icon">ⓘ</span><div><strong>Informe todos os documentos que vocês já têm.</strong> Eles não mudam o enquadramento, mas ajudam e agilizam o orçamento e o processo.</div></div>
+        <div class="card"><div class="card-head"><div><h2>Documentos disponíveis</h2><p>Do imóvel e da edificação.</p></div><span class="section-tag">Opcional</span></div><div class="card-body"><div class="doc-grid">
+          <div class="doc-item"><div><label for="habiteSe"><strong>Habite-se</strong></label><small>Certidão de que a edificação pode ser ocupada.</small></div><select id="habiteSe" name="habiteSe"><option value="unknown">Não sei</option><option value="yes">Tem</option><option value="no">Não tem</option></select></div>
+          <div class="doc-item"><div><label for="propertyDeed"><strong>Matrícula do imóvel</strong></label><small>Certidão do registro de imóveis.</small></div><select id="propertyDeed" name="propertyDeed"><option value="unknown">Não sei</option><option value="yes">Tem</option><option value="no">Não tem</option></select></div>
+          <div class="doc-item"><div><label for="leaseContract"><strong>Contrato de aluguel</strong></label><small>Quando o imóvel é alugado.</small></div><select id="leaseContract" name="leaseContract"><option value="unknown">Não sei</option><option value="yes">Tem</option><option value="no">Não tem</option><option value="na">Não se aplica</option></select></div>
+          <div class="doc-item"><div><label for="purchaseContract"><strong>Contrato de compra e venda</strong></label><small>Quando o imóvel foi comprado e ainda não está na matrícula.</small></div><select id="purchaseContract" name="purchaseContract"><option value="unknown">Não sei</option><option value="yes">Tem</option><option value="no">Não tem</option><option value="na">Não se aplica</option></select></div>
+          <div class="doc-item"><div><label for="archProject"><strong>Projeto arquitetônico</strong></label><small>Plantas da edificação.</small></div><select id="archProject" name="archProject"><option value="unknown">Não sei</option><option value="yes">Tem</option><option value="progress">Em elaboração</option><option value="no">Não tem</option></select></div>
+          <div class="doc-item"><div><label for="hydroProject"><strong>Projeto hidrossanitário</strong></label><small>Água, esgoto e drenagem.</small></div><select id="hydroProject" name="hydroProject"><option value="unknown">Não sei</option><option value="yes">Tem</option><option value="progress">Em elaboração</option><option value="no">Não tem</option></select></div>
+        </div><div class="grid" style="margin-top:14px">
+          <div class="field full"><label for="extraDocs">Outros documentos disponíveis <span class="optional">(opcional)</span></label><textarea id="extraDocs" name="extraDocs" placeholder="Ex.: licenças anteriores, alvará, laudos, responsável técnico..."></textarea></div>
         </div></div></div>
-        <div class="card" data-show-when="operationStatus:licensed"><div class="card-head"><div><h2>Licença ambiental existente</h2><p>Para ampliação, alteração ou renovação.</p></div></div><div class="card-body"><div class="grid three">
-          <div class="field"><label for="licenseType">Tipo</label><select id="licenseType" name="licenseType"><option value="">Selecione</option><option value="LAO">LAO</option><option value="AuA">AuA</option><option value="LAC">LAC</option><option value="LAP/LAI">LAP / LAI</option><option value="CCA">CCA</option><option value="DANC">DANC</option></select></div>
-          <div class="field"><label for="licenseNumber">Número</label><input id="licenseNumber" name="licenseNumber" placeholder="Nº da licença" /></div>
-          <div class="field"><label for="licenseExpiry">Validade</label><input id="licenseExpiry" name="licenseExpiry" type="date" /></div>
+        <div class="card"><div class="card-head"><div><h2>Passivo ambiental</h2><p>Não muda o enquadramento, mas muda o orçamento e o caminho do processo.</p></div></div><div class="card-body"><div class="grid">
+          <div class="field"><label for="envPenalty">Já recebeu multa, notificação ou auto de infração de órgão ambiental?</label><select id="envPenalty" name="envPenalty"><option value="unknown">Não sei</option><option value="no">Não</option><option value="yes">Sim</option></select></div>
+          <div class="field full" data-show-when="envPenalty:yes"><label for="envPenaltyDetails">Conte o que aconteceu</label><textarea id="envPenaltyDetails" name="envPenaltyDetails" placeholder="Órgão, data, número do processo e motivo, se souber."></textarea></div>
         </div></div></div>
       </section>
 
@@ -197,7 +257,7 @@
     1: ['Etapa 01 · Empresa', 'Vamos conhecer a empresa.', 'Só o essencial: o enquadramento ambiental depende da atividade e da operação, não do porte fiscal nem dos documentos.'],
     2: ['Etapa 02 · Estabelecimento', 'Onde e em que espaço a atividade acontece?', 'A área útil é o parâmetro de porte da maioria das atividades da lista CONSEMA.'],
     3: ['Etapa 03 · Operação', 'O que a empresa faz na prática?', 'CNAEs e características da operação definem o código CONSEMA. Cada resposta de sim ou não elimina ou confirma enquadramentos.'],
-    4: ['Etapa 04 · Orçamento', 'Documentos para a próxima fase.', 'Opcional. Estes itens não mudam o enquadramento: servem para preparar o orçamento e o processo.'],
+    4: ['Etapa 04 · Documentos', 'Documentos disponíveis.', 'Opcional. Estes itens não mudam o enquadramento: ajudam e agilizam o orçamento e o processo.'],
     5: ['Resultado · Enquadramento', 'Pré-enquadramento ambiental.', 'Código provável, porte, modalidade e órgão de cada atividade, a confirmar no texto oficial e com o órgão ambiental.']
   };
   // form.elements[name] também resolve grupos de rádio (RadioNodeList.value = opção marcada).
@@ -211,6 +271,9 @@
     return t !== '' && Number.isFinite(x) && x >= 0 ? x : null;
   };
   const num = (name) => { const v = val(name); return v === '' ? null : parseNum(v); };
+  // Grupo de caixas de seleção (ex.: tipo de unidade): devolve os valores marcados.
+  const isCheckGroup = (name) => !!form.querySelector(`input[type="checkbox"][name="${name}"]`);
+  const vals = (name) => [...form.querySelectorAll(`input[name="${name}"]:checked`)].map(el => el.value);
   const optionText = (name) => { const el = form.elements[name]; return el?.selectedOptions?.[0]?.textContent || ''; };
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -302,11 +365,15 @@
     AD:{label:'AD · área de depósito',unit:'m²',digits:0,get:a=>a.chemArea,ask:'Marque “Sim” em produtos químicos ou agrotóxicos na etapa 03 e informe a área do depósito.'},
     VT:{label:'VT · volume total de tancagem',unit:'m³',digits:2,get:a=>a.tankVolume,ask:'Informe o volume dos tanques na etapa 03 (pergunta sobre combustível).'},
     NL:{label:'NL · número de leitos',unit:'leitos',digits:0,get:a=>a.beds,ask:'Informe o número de leitos na etapa 03 (o campo aparece ao marcar hospital, ou “Hotelaria” no tipo de unidade).'},
-    NV:{label:'NV · número de veículos',unit:'veículos',digits:0,get:()=>null,ask:'Parâmetro não coletado nesta versão: número de veículos de coleta.'},
-    QMR:{label:'QMR · resíduos por mês',unit:'t/mês',digits:0,get:()=>null,ask:'Parâmetro não coletado nesta versão: quantidade média mensal de resíduos.'},
+    NV:{label:'NV · número de veículos',unit:'veículos',digits:0,get:a=>a.vehicles,ask:'Informe o número de veículos de coleta na etapa 03.'},
+    QMR:{label:'QMR · resíduos por mês',unit:'t/mês',digits:0,get:a=>a.wasteMonthly,ask:'Informe a quantidade média de resíduos recebidos por mês na etapa 03.'},
     UNICO:{label:'Porte único',unit:'',digits:0,get:()=>null}
   };
   const RESULT_TEXT = {AuA:'AuA · Autorização Ambiental (ato único, sem estudo ambiental)',RAP:'LAP → LAI → LAO, com RAP',EAS:'LAP → LAI → LAO, com EAS',EIA:'LAP → LAI → LAO, com EIA/RIMA'};
+  // Licença e documentos por código, segundo as Instruções Normativas (IN) do IMA.
+  // Vazio até a especialista enviar a compilação. Formato: {'11.60.02': {in:'IN 00', licenca:'...', docs:'...'}}.
+  const IN_IMA = {};
+  const IN_PENDING = 'A confirmar: a licença de cada código vem da Instrução Normativa do IMA (compilação em andamento).';
   // Habilitação para o licenciamento de impacto local (lista SEMAE/CONSEMA atualizada até 26/08/2026).
   const MUN = {
     'Itajaí':{organ:'FAMAI', level:'III', act:'Res. CONSEMA 008/08'},
@@ -417,7 +484,7 @@
     {id:'serraria',label:'Serraria e beneficiamento primário de madeira',cnae:['1610'],kw:/serraria|desdobr(o|amento) de madeira/,resolve:one('15.10.00')},
     {id:'esquadriasMadeira',label:'Molduras, esquadrias e casas pré-fabricadas de madeira',cnae:['1622'],kw:/esquadrias de madeira|casas? pre.?fabricad/,resolve:one('15.55.00')},
     {id:'grafica',label:'Gráfica e impressão',cnae:['181','182'],kw:/\bgrafica\b|serigraf|impressao offset/,resolve:a=>{
-      const f = [a.hazWaste, a.effluent, a.emission];
+      const f = [a.hazWaste, a.effluentAny, a.emission];
       const answer = f.includes('yes') ? 'yes' : f.every(x => x === 'no') ? 'no' : 'unknown';
       return tri(answer,{yes:'29.10.00',no:{unlisted:'Gráfica sem resíduos perigosos, efluentes líquidos ou emissões atmosféricas não aparece na lista: o código 29.10.00 exige pelo menos uma dessas condições.'}},{yes:'Com resíduos perigosos, efluentes ou emissões',no:'Sem nenhuma dessas condições'},'Confirmar se há resíduos perigosos (tintas, solventes), efluentes líquidos ou emissões atmosféricas.');
     }},
@@ -448,7 +515,7 @@
     }},
     {id:'efluentes',label:'Coleta e transporte de efluentes (limpa-fossa)',cnae:['3702'],kw:/limpa.?fossa|esgotamento de fossa/,resolve:one('53.20.20')},
     {id:'hotelaria',label:'Hotelaria e hospedagem',cnae:['5510','5590'],kw:/\b(hotel|hotelaria|pousada|hostel|albergue)\b(?! (para|de) (caes|cachorros|gatos|pets?|animais))/,resolve:a=>{
-      const noSewer = a.sewerNetwork === 'no' || ['septic','septicFilter','own','other'].includes(a.sewageTreatment);
+      const noSewer = a.sewerNetwork === 'no' || ['septic','individual','other'].includes(a.sewageTreatment);
       const withSewer = a.sewerNetwork === 'yes' && a.sewageTreatment === 'public';
       return tri(noSewer ? 'yes' : withSewer ? 'no' : 'unknown',{yes:'71.11.02',no:{unlisted:'Hotelaria só entra na lista (71.11.02) em município sem plano diretor ou onde não há coleta e tratamento de esgoto na área. Com rede pública, fica fora da lista; confirmar o plano diretor municipal.'}},{yes:'Sem coleta e tratamento de esgoto na área',no:'Com rede coletora e tratamento público'},'Informar se há rede coletora de esgoto e qual o sistema de tratamento (etapa 02).');
     }},
@@ -463,9 +530,12 @@
   ];
   const FAM_BY_ID = Object.fromEntries(FAM.map(f => [f.id, f]));
   const AREA_FIELDS = ['areaProduction','areaSupport','areaStorage','areaYard','areaTreatment'];
-  const NUM_FIELDS = [...AREA_FIELDS, 'builtArea', 'tankVolume', 'chemArea', 'beds'];
-  const FIELDS = ['companyName','cnpj','municipality','operationStatus','address','postalCode','unitType','propertyUse','sharedArea','fixedPlace','floors','addressNotes','sewerNetwork','sewageTreatment','mainCnae','otherCnaes','activityDescription','equipment','production','painting','chemTreatment','heatProcess','emission','noise','animals','animalType','food','foodType','effluent','washing','hazWaste','fuelStorage','chemStorage','chemType','health','archProject','hydroProject','extraDocs','licenseType','licenseNumber','licenseExpiry'];
-  const KEY_QUESTIONS = ['production','painting','chemTreatment','heatProcess','emission','animals','food','effluent','washing','hazWaste','fuelStorage','chemStorage','health','sewerNetwork'];
+  const NUM_FIELDS = [...AREA_FIELDS, 'builtArea', 'tankVolume', 'chemArea', 'beds', 'vehicles', 'wasteMonthly'];
+  const EXTRA_SLOTS = [1, 2, 3];
+  const FIELDS = ['companyName','cnpj','municipality','operationStatus','operationOther','licenseAction','licenseType','licenseOrgan','licenseNumber','licenseExpiry','licenseChange','address','postalCode','unitTypeOther','propertyUse','propertyOther','sharedArea','multiCnpj','fixedPlace','floors','addressNotes','sewerNetwork','sewageTreatment','sewageProject','mainCnae','otherCnaes','activityDescription','hasEquipment','equipment','production','painting','chemTreatment','chemTreatmentType','heatProcess','emission','animals','animalType','food','foodType','effluent','washing','hazWaste','fuelStorage','chemStorage','chemType','chemHandling','chemHandlingType','health','habiteSe','propertyDeed','leaseContract','purchaseContract','archProject','hydroProject','extraDocs','envPenalty','envPenaltyDetails',
+    ...EXTRA_SLOTS.flatMap(n => ['extraCnpj' + n, 'extraName' + n, 'extraCnaes' + n])];
+  const KEY_QUESTIONS = ['production','painting','chemTreatment','heatProcess','emission','animals','food','effluent','washing','hazWaste','fuelStorage','chemStorage','chemHandling','health','sewerNetwork'];
+  const SITUATIONS_WITH_CNPJ = ['licensed', 'unlicensed'];
 
   // Aceita "2542-0/00", "2542000", "25.42-0-00" (cartão CNPJ) e a classe ("2542-0").
   const CNAE_RE = /\d{2}\.?\d{2}(?:\s*-?\s*\d(?:\s*[\/-]?\s*\d{2})?)?/;
@@ -491,12 +561,25 @@
     AREA_FIELDS.forEach(f => { const v = num(f); if (v != null) { sum += v; any = true; } });
     return any ? sum : null;
   }
-  // Campo dentro de um bloco condicional escondido (ex.: leitos sem hospital) é ignorado.
-  const isHidden = (n) => !!$(n)?.closest('[data-show-when]')?.classList.contains('hidden');
+  // Campo dentro de um bloco condicional escondido (ex.: leitos sem hospital) é ignorado, inclusive
+  // quando o bloco escondido é um ancestral mais distante (ex.: CNPJ 3 dentro do cartão de outros CNPJs).
+  const COND = '[data-show-when],[data-param]';
+  const isHidden = (n) => {
+    for (let el = $(n)?.closest(COND); el; el = el.parentElement?.closest(COND)) if (el.classList.contains('hidden')) return true;
+    return false;
+  };
   function collect() {
     const a = {};
     FIELDS.forEach(n => a[n] = isHidden(n) ? '' : val(n));
-    KEY_QUESTIONS.concat(['sharedArea','fixedPlace','sewageTreatment','noise']).forEach(n => { if (!a[n]) a[n] = 'unknown'; });
+    KEY_QUESTIONS.concat(['sharedArea','multiCnpj','fixedPlace','sewageTreatment','hasEquipment']).forEach(n => { if (!a[n]) a[n] = 'unknown'; });
+    a.unitTypes = vals('unitType');
+    // Efluente de processo: "com produto químico" e "sem produto químico" contam como "sim" nas regras.
+    a.effluentAny = ['chemical', 'nochem'].includes(a.effluent) ? 'yes' : a.effluent;
+    a.cnpjRequired = SITUATIONS_WITH_CNPJ.includes(a.operationStatus);
+    a.extraCnpjs = a.multiCnpj !== 'yes' ? [] : EXTRA_SLOTS.map(n => ({slot:n, cnpj:a['extraCnpj' + n], name:a['extraName' + n], cnaes:splitCnaes(a['extraCnaes' + n] || '')}))
+      .filter(e => e.cnpj || e.name || e.cnaes.length);
+    a.vehicles = isHidden('vehicles') ? null : num('vehicles');
+    a.wasteMonthly = isHidden('wasteMonthly') ? null : num('wasteMonthly');
     a.areas = Object.fromEntries(AREA_FIELDS.map(f => [f, num(f)]));
     a.areaM2 = areaSum();
     a.au3ha = a.areaM2 == null ? null : a.areaM2 / 10000;
@@ -516,15 +599,18 @@
     const v = P.get(a);
     if (v == null) return {label:'Parâmetro não informado', detail:P.ask, bandText, missing:true};
     const minB = bands.find(b => b[0] === 'MIN'), midB = bands.find(b => b[0] === 'M');
+    // Faixa que a base piloto não tem: o porte fica "não determinado" e vira pendência, nunca um porte.
+    const open = (label, detail) => ({label, detail, value:v, bandText, undetermined:true});
+    const OFFICIAL = 'conferir na tabela oficial (Res. CONSEMA 250/2024 com as correções da 259/2024).';
     if (minB && v < minB[2]) return {label:'Porte mínimo', result:minB[3], value:v, bandText};
     if (midB) {
       if (v > midB[1] && v < midB[2]) return {label:'Porte médio', result:midB[3], value:v, bandText};
-      if (v === midB[1] || v === midB[2]) return {label:'No limite entre faixas', detail:'Conferir na tabela oficial se o limite é inclusivo.', value:v, bandText};
-      if (v > midB[2]) return {label:'Acima do porte médio (provável porte grande)', detail:'O estudo do porte grande não está na base piloto (pode ser EAS ou EIA/RIMA).', value:v, bandText};
-      if (minB) return {label:'Entre o mínimo e o médio (provável porte pequeno)', detail:'A faixa do porte pequeno não está na base piloto: confirmar o estudo na tabela oficial.', value:v, bandText};
-      return {label:'Abaixo do porte médio', detail:'Pode ser porte pequeno ou estar abaixo do limite de licenciamento (CCA). A faixa inferior não está na base piloto: conferir na tabela oficial.', value:v, bandText};
+      if (v === midB[1] || v === midB[2]) return open('Porte não determinado (no limite entre faixas)', 'O valor está exatamente no limite entre duas faixas: ' + OFFICIAL);
+      if (v > midB[2]) return open('Porte não determinado (acima do porte médio)', 'Provável porte grande. O estudo do porte grande ainda não está na base piloto (pode ser EAS ou EIA/RIMA): ' + OFFICIAL);
+      if (minB) return open('Porte não determinado (entre o mínimo e o médio)', 'Provável porte pequeno. O estudo do porte pequeno ainda não está na base piloto: ' + OFFICIAL);
+      return open('Porte não determinado', `A faixa de porte pequeno deste código ainda não está na base piloto. Com ${fmt(v, P.digits)} ${P.unit}, pode ser porte pequeno ou estar abaixo do limite de licenciamento (CCA): ` + OFFICIAL);
     }
-    return {label:'Acima do porte mínimo', detail:'As faixas superiores não estão na base piloto.', value:v, bandText};
+    return open('Porte não determinado (acima do porte mínimo)', 'As faixas acima do porte mínimo ainda não estão na base piloto: ' + OFFICIAL);
   }
   function organFor(code, a) {
     const lvl = ACT[code][4];
@@ -538,19 +624,30 @@
     if (!o.code) return o;
     const [desc, pot, k] = ACT[o.code];
     const porte = computePorte(o.code, a);
+    // Regularização: a norma prevê LAO com ECA (art. 20), mas na prática o caminho depende do órgão.
     const regularize = a.operationStatus === 'unlicensed' && porte.result && porte.result !== 'AuA';
-    const outcome = porte.result ? (regularize ? `LAO de regularização com ECA (proporcional ao ${porte.result})` : RESULT_TEXT[porte.result]) : porte.detail;
-    return {...o, desc, pot:{ar:pot[0], agua:pot[1], solo:pot[2], geral:pot[3]}, param:k, paramLabel:PARAM[k].label, unit:PARAM[k].unit, digits:PARAM[k].digits, porte, outcome, organ:organFor(o.code, a), note:ACT_NOTES[o.code]};
+    const outcome = porte.result ? (regularize ? `Regularização: caminho definido com o órgão (a Res. 250/2024 prevê LAO com ECA proporcional ao ${porte.result})` : RESULT_TEXT[porte.result]) : porte.missing || porte.undetermined ? 'A definir: depende do porte (veja a pendência abaixo).' : porte.detail;
+    const inRef = IN_IMA[o.code];
+    const license = inRef ? [inRef.licenca, inRef.in && `(${inRef.in})`].filter(Boolean).join(' ') : IN_PENDING;
+    return {...o, desc, pot:{ar:pot[0], agua:pot[1], solo:pot[2], geral:pot[3]}, param:k, paramLabel:PARAM[k].label, unit:PARAM[k].unit, digits:PARAM[k].digits, porte, outcome, license, licenseKnown:!!inRef, organ:organFor(o.code, a), note:ACT_NOTES[o.code]};
+  }
+  // Rótulo de certeza: "licensable" só quando nada pendente pode mudar o resultado.
+  // Um código só, mas com pendência (resposta "não sei", porte não determinado, atividade vinda
+  // só da descrição), vira "probable". Mais de uma alternativa: "depends".
+  function settleKind(item) {
+    if (!item.opts) return item;
+    item.kind = item.opts.length > 1 ? 'depends' : item.pend.length ? 'probable' : 'licensable';
+    return item;
   }
   function buildItem(fam, a, ctx) {
     const r = fam.resolve(a, ctx);
-    const item = {fam:fam.id, label:fam.label, sources:[ctx.source], pend:[...(r.pend || [])], note:r.note || ''};
+    const item = {fam:fam.id, label:fam.label, sources:[ctx.source], entity:ctx.entity || 0, pend:[...(r.pend || [])], note:r.note || ''};
     if (r.outside) return {...item, kind:'outside', reason:r.outside};
     if (r.unlisted) return {...item, kind:'unlisted', reason:r.unlisted};
+    if (r.consult) return {...item, kind:'consult', reason:r.consult};
     item.opts = r.opts.map(o => enrichOpt(o, a));
-    item.kind = item.opts.length > 1 ? 'depends' : 'licensable';
-    item.opts.forEach(o => { if (o.porte?.missing && !item.pend.includes(o.porte.detail)) item.pend.push(o.porte.detail); });
-    return item;
+    item.opts.forEach(o => { if ((o.porte?.missing || o.porte?.undetermined) && !item.pend.includes(o.porte.detail)) item.pend.push(o.porte.detail); });
+    return settleKind(item);
   }
 
   function analyze(a) {
@@ -558,9 +655,10 @@
     const byFam = new Map(), byResult = new Map();
     const text = norm(a.activityDescription + ' ' + a.equipment);
     // Mesmo resultado: junta as origens. Resultado diferente (ex.: 1053 sorvete e 1091 panificação): item próprio.
+    // Mesma família em CNPJs diferentes gera itens separados: cada CNPJ tem processo próprio (art. 10).
     const add = (fam, ctx) => {
       const item = buildItem(fam, a, ctx);
-      const key = [fam.id, item.kind, item.reason || '', ...(item.opts || []).map(o => o.code || o.unlisted)].join('|');
+      const key = [item.entity, fam.id, item.kind, item.reason || '', ...(item.opts || []).map(o => o.code || o.unlisted)].join('|');
       const same = byResult.get(key);
       if (same) { same.sources.push(ctx.source); item.pend.forEach(p => same.pend.includes(p) || same.pend.push(p)); return same; }
       byResult.set(key, item);
@@ -568,15 +666,20 @@
       items.push(item);
       return item;
     };
-    a.cnaes.forEach((raw, i) => {
-      const role = i === 0 ? 'CNAE principal' : 'CNAE secundário';
+    // Entidade 0 é o CNPJ principal; as demais vêm do cartão "Outros CNPJs no mesmo local".
+    const multi = a.extraCnpjs.length > 0;
+    const entities = [{label:'CNPJ principal', cnpj:a.cnpj, cnaes:a.cnaes}, ...a.extraCnpjs.map(e => ({label:e.name || `CNPJ ${e.slot + 1}`, cnpj:e.cnpj, cnaes:e.cnaes}))];
+    a.entities = entities.map(({label, cnpj}) => ({label, cnpj}));
+    entities.forEach((ent, e) => ent.cnaes.forEach((raw, i) => {
+      const role = e > 0 ? 'CNAE' : i === 0 ? 'CNAE principal' : 'CNAE secundário';
       const digits = cnaeDigits(raw);
-      const source = `${role} · ${raw}`;
+      const who = multi ? `${ent.label}${ent.cnpj ? ' (' + ent.cnpj + ')' : ''} · ` : '';
+      const source = `${who}${role} · ${raw}`;
       const fam = digits.length >= 4 ? matchFamily(digits) : null;
-      if (fam) { add(fam, {digits, text, source}); return; }
-      items.push({fam:null, label:'CNAE sem correspondência na base piloto', sources:[source], kind:'outside', pend:[],
+      if (fam) { add(fam, {digits, text, source, entity:e}); return; }
+      items.push({fam:null, label:'CNAE sem correspondência na base piloto', sources:[source], entity:e, kind:'outside', pend:[],
         reason: digits.length < 4 ? 'Código não reconhecido: informe o CNAE com 7 dígitos (ex.: 2542-0/00).' : 'Este CNAE ainda não está ligado à lista CONSEMA nesta versão. Isso não significa dispensa: conferir no Anexo VI da Res. 250/2024.'});
-    });
+    }));
     // A descrição pode revelar uma fabricação que o CNAE não mostra (ex.: comércio no principal).
     const foodFams = ['alimentos', 'bebidas'];
     FAM.forEach(f => {
@@ -584,7 +687,6 @@
       // A palavra-chave sozinha não confirma a atividade (ex.: "entregamos para padarias").
       const item = add(f, {digits:'', text, source:'Descrição da operação'});
       item.pend.unshift('Atividade encontrada só pela descrição: confirmar se ela é exercida no local.');
-      if (item.kind === 'licensable') item.kind = 'depends';
     });
     // Regras pela operação, independentes do CNAE.
     const atacado = a.cnaes.some(c => cnaeDigits(c).startsWith('46'));
@@ -600,38 +702,58 @@
     if (a.health === 'lab' && !byFam.has('laboratorioSaude')) add(FAM_BY_ID.laboratorioSaude, {digits:'', text, source:'Operação (etapa 03)'});
     if (a.animals === 'yes' && a.animalType === 'hospital' && !byFam.has('veterinaria')) add(FAM_BY_ID.veterinaria, {digits:'', text, source:'Operação (etapa 03)'});
     if (a.food === 'yes' && a.foodType !== 'refeicoes' && !['alimentos','bebidas'].some(id => byFam.has(id)) && (a.foodType || !byFam.has('alimentacao'))) add(FAM_BY_ID.alimentos, {digits:'', text, source:'Operação (etapa 03)'});
+    // Manipular produto químico é diferente de armazenar e tem outro enquadramento, ainda não mapeado.
+    const chemFams = ['limpeza', 'cosmeticos', 'tintas'];
+    if (a.chemHandling === 'yes' && !chemFams.some(id => byFam.has(id))) {
+      const how = {fracionamento:'fracionamento (troca de embalagem)', mistura:'mistura ou diluição', formulacao:'formulação de produto novo', outro:'outra forma de manipulação'}[a.chemHandlingType] || 'forma de manipulação não informada';
+      extra('manipulacaoQuimica', 'Manipulação de produto químico', {consult:`Informado: ${how}. Manipular produto químico tem enquadramento diferente de só armazenar. O código depende do que é feito com o produto e ainda não está mapeado na base piloto: enquadramento a confirmar pela consultoria.`, pend:a.chemHandlingType ? [] : ['Informar como o produto químico é manipulado (etapa 03).']});
+    }
+    items.forEach(settleKind);
 
     const general = [];
-    const productive = items.some(i => i.kind === 'licensable' || i.kind === 'depends');
+    const productive = items.some(i => ['licensable', 'probable', 'depends', 'consult'].includes(i.kind));
     if (a.animals === 'yes' && a.animalType === 'criacao') general.push('Criação de animais: os códigos dos grupos 01 e 03 (agropecuária e aquicultura) ainda não estão na base piloto.');
     if (a.animals === 'yes' && a.animalType === 'abate') general.push('Abate de animais: códigos 26.50.20 a 26.50.40, ainda fora da base piloto.');
     if (a.heatProcess === 'foundry' && !byFam.has('maquinas')) general.push('Fundição de metais: códigos 11.00.x e 11.11.x, ainda fora da base piloto.');
     if ((a.painting === 'yes' || a.chemTreatment === 'yes') && !items.some(i => FAM_BY_ID[i.fam]?.paint)) general.push('Pintura ou tratamento químico informado, mas nenhuma atividade identificada usa essa informação: conferir o código "com pintura" do grupo correspondente.');
     if (a.painting === 'unknown' && /pistola|cabine de pintura|estufa de pintura/.test(text)) general.push('Os equipamentos informados sugerem pintura: responder a pergunta sobre pintura na etapa 03.');
     if (a.washing === 'yes' && !['acabamentoTextil','lavanderia','confeccao'].some(id => byFam.has(id))) general.push('Lavanderia, tinturaria ou estamparia com lavagem informada: verificar os códigos 24.70.00, 24.80.00 e 25.20.00.');
-    if ((a.production === 'yes' || a.unitType === 'industria') && !productive) general.push('A operação inclui fabricação, transformação ou conserto, mas nenhuma atividade produtiva foi enquadrada: detalhe o processo na descrição ou informe o CNAE correspondente.');
-    if (a.sharedArea === 'yes') general.push('Área compartilhada com outra empresa: no enquadramento somam-se as áreas individual e compartilhada, e os estudos consideram todas as atividades da área (art. 10, §3º).');
+    if ((a.production === 'yes' || a.unitTypes.includes('industria')) && !productive) general.push('A operação inclui fabricação, transformação ou conserto, mas nenhuma atividade produtiva foi enquadrada: detalhe o processo na descrição ou informe o CNAE correspondente.');
+    if (a.sharedArea === 'yes') general.push('Terreno ou endereço compartilhado com outra empresa: no enquadramento somam-se as áreas individual e compartilhada, e os estudos consideram todas as atividades da área (art. 10, §3º).');
+    if (a.multiCnpj === 'yes') general.push(multi
+      ? 'Mais de um CNPJ no local: cada CNPJ tem processo próprio, vinculado aos demais (art. 10). As áreas de cada um ainda não são separadas nesta versão: a área útil informada vale para o local inteiro.'
+      : 'Há mais de um CNPJ no local: informe os outros CNPJs e as atividades de cada um na etapa 03.');
+    const licCodes = new Set(items.filter(i => i.opts).flatMap(i => i.opts.filter(o => o.code).map(o => o.code)));
+    if (licCodes.size > 1) general.push('Há mais de uma atividade licenciável possível. O sistema sugere a de maior impacto, mas a definição da atividade mais crítica, e com ela do órgão e do estudo, é da consultoria.');
     if (a.fixedPlace === 'external') general.push('Atividade só externa: o enquadramento considera o local onde a atividade é exercida. Confirmar com a especialista como tratar serviços feitos no cliente.');
     if (a.fixedPlace === 'both') general.push('Atua no endereço fixo e no cliente: o enquadramento considera o local fixo. Serviços feitos no cliente a confirmar.');
     return {items, general};
   }
 
+  const LICENSE_PATH = {
+    expand:'Ampliação: se a mudança alterar o tipo de estudo, nova LAP; se alterar porte ou parâmetro, LAI; sem alteração, basta comunicar por ofício (art. 11).',
+    alter:'Alteração: o pedido depende do que muda. Mudança de porte, parâmetro ou estudo segue o art. 11 (nova LAP, LAI ou ofício). Outras alterações, como razão social, devem ser comunicadas ao órgão; confirmar o rito com a consultoria.',
+    renew:'Renovação: a renovação da LAO deve ser pedida com pelo menos 120 dias de antecedência do vencimento. O enquadramento abaixo serve para conferir se a atividade continua no mesmo código e porte.'
+  };
   function processPath(a, anyLic) {
+    if (a.operationStatus === 'viability') return 'Viabilidade ambiental da área: a análise do terreno (restrições, zoneamento, áreas protegidas) é feita pela consultoria. O enquadramento abaixo considera a atividade pretendida, para mostrar se ela seria licenciável e em qual código.';
+    if (a.operationStatus === 'other') return `Outra situação${a.operationOther ? ': “' + a.operationOther + '”' : ' (não descrita)'}. O caminho do processo será definido pela consultoria.`;
     if (!anyLic) return 'Nenhuma atividade licenciável identificada. Se confirmado, o órgão pode emitir a DANC (validade de até 1 ano) depois de analisar todas as atividades do empreendimento (art. 15).';
+    if (a.operationStatus === 'licensed') return LICENSE_PATH[a.licenseAction] || 'Já tem licença: informe na etapa 01 se vai ampliar, alterar ou renovar. Cada caso tem um pedido diferente (art. 11 para ampliação; renovação com 120 dias de antecedência).';
     return {
-      new:'Instalação nova: o licenciamento vem antes da instalação e da operação (art. 8º). AuA e LAC são atos únicos. Com RAP, EAS ou EIA, o caminho é LAP → LAI → LAO, que podem ser concomitantes.',
-      unlicensed:'Já opera sem licença: a regularização é feita por LAO de regularização com Estudo de Conformidade Ambiental, o ECA (art. 20), sem prejuízo de sanções. Para atividades de AuA, confirmar o rito com o órgão.',
-      licensed:'Já licenciada: se a mudança alterar o tipo de estudo, nova LAP; se alterar porte ou parâmetro, LAI; sem alteração, basta comunicar por ofício (art. 11). A renovação da LAO deve ser pedida com 120 dias de antecedência.'
-    }[a.operationStatus] || 'Situação da operação não informada: o caminho pode ser licenciamento novo, regularização (LAO com ECA) ou ampliação e renovação.';
+      install:'Instalação nova, com obra ou implantação: o licenciamento vem antes da instalação e da operação (art. 8º). AuA e LAC são atos únicos. Com RAP, EAS ou EIA, o caminho é LAP → LAI → LAO, que podem ser concomitantes.',
+      start:'Início da operação em imóvel já pronto, sem obra: o licenciamento vem antes de começar a operar (art. 8º). AuA e LAC são atos únicos. Com RAP, EAS ou EIA, as licenças LAP, LAI e LAO podem ser concomitantes; confirmar o rito com o órgão.',
+      unlicensed:'Já opera sem licença: é preciso regularizar. A Res. CONSEMA 250/2024 prevê a LAO de regularização com Estudo de Conformidade Ambiental, o ECA (art. 20), mas na prática o caminho depende do órgão ambiental. Pode haver sanções.'
+    }[a.operationStatus] || 'Situação da operação não informada: o caminho pode ser licenciamento novo, regularização ou ampliação, alteração e renovação.';
   }
 
   function generateReport() {
     const a = collect();
     const {items, general} = analyze(a);
-    const order = {licensable:0, depends:1, outside:2, unlisted:3};
-    items.sort((x, y) => order[x.kind] - order[y.kind]);
-    const licOpts = items.filter(i => i.kind === 'licensable' || i.kind === 'depends').flatMap(i => i.opts.filter(o => o.code));
-    const anyLic = items.some(i => i.kind === 'licensable') || licOpts.length > 0;
+    const order = {licensable:0, probable:1, depends:2, consult:3, outside:4, unlisted:5};
+    items.sort((x, y) => (x.entity - y.entity) || (order[x.kind] - order[y.kind]));
+    const licOpts = items.filter(i => i.opts).flatMap(i => i.opts.filter(o => o.code));
+    const anyLic = licOpts.length > 0;
     const stateNeeded = licOpts.some(o => o.organ.state);
     const maxLvl = licOpts.reduce((m, o) => o.organ.level && LEVELS.indexOf(o.organ.level) > LEVELS.indexOf(m) ? o.organ.level : m, 'I');
     const top = licOpts.slice().sort((x, y) => (RANK[y.pot.geral] - RANK[x.pot.geral]) || ((y.organ.level ? LEVELS.indexOf(y.organ.level) : 9) - (x.organ.level ? LEVELS.indexOf(x.organ.level) : 9)))[0] || null;
@@ -645,8 +767,11 @@
     const pendCount = items.reduce((n, i) => n + i.pend.length, 0) + general.length;
     const answered = KEY_QUESTIONS.filter(q => a[q] && a[q] !== 'unknown').length + (a.areaM2 != null ? 1 : 0) + (a.operationStatus && a.operationStatus !== 'unsure' ? 1 : 0);
     const completion = Math.round(answered / (KEY_QUESTIONS.length + 2) * 100);
-    const counts = {licensable:items.filter(i => i.kind === 'licensable').length, depends:items.filter(i => i.kind === 'depends').length, unlisted:items.filter(i => i.kind === 'unlisted').length, outside:items.filter(i => i.kind === 'outside').length};
-    return {data:a, items, general, counts, pendCount, completion, anyLic, stateNeeded, maxLvl, top, organText, path:processPath(a, anyLic), license, generatedAt:new Date().toISOString(), sources:sourcesFor(a)};
+    const count = k => items.filter(i => i.kind === k).length;
+    const counts = {licensable:count('licensable'), probable:count('probable'), depends:count('depends'), consult:count('consult'), unlisted:count('unlisted'), outside:count('outside')};
+    // Com mais de um código possível, a atividade mais crítica é só uma sugestão: quem decide é a consultoria.
+    const topIsSuggestion = new Set(licOpts.map(o => o.code)).size > 1;
+    return {data:a, items, general, counts, pendCount, completion, anyLic, stateNeeded, maxLvl, top, topIsSuggestion, organText, path:processPath(a, anyLic), license, generatedAt:new Date().toISOString(), sources:sourcesFor(a)};
   }
   function sourcesFor(a) {
     const list = [
@@ -665,10 +790,18 @@
   // Resultado
   // ---------------------------------------------------------------------------
   const KIND = {
-    licensable:{cls:'review', text:'Sujeita a licenciamento'},
+    licensable:{cls:'review', text:'Licenciável'},
+    probable:{cls:'probable', text:'Provavelmente licenciável · confirmar'},
     depends:{cls:'info', text:'Depende da operação'},
+    consult:{cls:'consult', text:'Análise da consultoria'},
     unlisted:{cls:'ok', text:'Não consta da lista · DANC provável'},
     outside:{cls:'neutral', text:'Fora da base piloto'}
+  };
+  const KIND_HELP = {
+    licensable:'Consta da lista e nenhuma resposta pendente muda o resultado.',
+    probable:'Consta da lista, mas falta confirmar algo (veja as pendências).',
+    depends:'O código muda conforme uma resposta ainda em aberto.',
+    consult:'Situação que o sistema ainda não enquadra sozinho.'
   };
   const POT_LABEL = {ar:'Ar', agua:'Água', solo:'Solo', geral:'Geral'};
   function optHtml(o, multiple) {
@@ -678,7 +811,8 @@
     const value = o.param === 'UNICO' ? '—' : o.porte.value != null ? `${fmt(o.porte.value, o.digits)} ${o.unit}` : 'Não informado';
     return `<div class="opt">${cond}<div class="opt-title"><span class="code-tag">${esc(o.code)}</span>${esc(o.desc)}</div><div class="pot-row">${pot}</div>
       <div class="kv"><div><span>Parâmetro de porte</span><b>${esc(o.paramLabel)}</b></div><div><span>Valor informado</span><b>${esc(value)}</b></div>
-      <div><span>Porte</span><b>${esc(o.porte.label)}</b></div><div><span>Enquadramento</span><b>${esc(o.outcome)}</b></div>
+      <div><span>Porte</span><b>${esc(o.porte.label)}</b></div><div><span>Modalidade e estudo (pelo porte)</span><b>${esc(o.outcome)}</b></div>
+      <div class="full"><span>Licença (Instrução Normativa do IMA)</span><b style="${o.licenseKnown ? '' : 'font-weight:600;color:#7d8f9a'}">${esc(o.license)}</b></div>
       <div class="full"><span>Órgão provável</span><b>${esc(o.organ.text)}</b><div class="band-text" style="margin-top:3px">${esc(o.organ.detail)}</div></div></div>
       <div class="band-text">Faixas na base piloto: ${esc(o.porte.bandText)}</div>${o.note ? `<div class="req-note">${esc(o.note)}</div>` : ''}</div>`;
   }
@@ -697,29 +831,48 @@
     if (r.anyLic && r.stateNeeded) steps.push('Abrir o processo no IMA (SinFAT): pelo menos uma atividade não é de impacto local.');
     if (!r.anyLic && r.items.length && r.items.every(i => i.kind === 'unlisted')) steps.push('Se a empresa precisar comprovar que não precisa de licença, pedir a DANC no SinFAT (modalidade "Atividade não licenciável"), com validade de até 1 ano.');
     if (r.counts.outside) steps.push('Verificar manualmente na lista CONSEMA os CNAEs fora da base piloto.');
-    if (a.operationStatus === 'unlicensed' && r.anyLic) steps.push('Planejar a regularização: LAO de regularização com ECA.');
+    if (r.topIsSuggestion) steps.push('Definir com a consultoria a atividade mais crítica: ela decide o órgão e o estudo do empreendimento.');
+    if (a.operationStatus === 'unlicensed' && r.anyLic) steps.push('Planejar a regularização com o órgão ambiental: o caminho (por exemplo, LAO com ECA) depende do órgão.');
+    if (a.operationStatus === 'viability') steps.push('Pedir à consultoria a análise de viabilidade ambiental da área antes de decidir pela instalação.');
+    if (a.operationStatus === 'other') steps.push('Encaminhar a situação descrita na etapa 01 para análise da consultoria.');
+    if (r.counts.consult) steps.push('Levar à consultoria os itens marcados como "Análise da consultoria".');
     if (r.license && r.license.days <= 120) steps.push(r.license.text);
-    steps.push('Com o enquadramento confirmado, reunir os documentos da etapa 04 para o orçamento.');
+    if (a.envPenalty === 'yes') steps.push('Levar à consultoria as multas, notificações ou autuações informadas: elas mudam o caminho do processo.');
+    steps.push('Com o enquadramento confirmado, reunir os documentos disponíveis (etapa 04) para o orçamento.');
     return steps;
   }
   function budgetDocs(a) {
-    const status = {yes:'Tem', progress:'Em elaboração', no:'Não tem', unknown:'Não informado', '':'Não informado'};
+    const status = {yes:'Tem', progress:'Em elaboração', no:'Não tem', na:'Não se aplica', unknown:'Não informado', '':'Não informado'};
+    const property = a.propertyUse === 'own' ? 'Próprio' : a.propertyUse === 'rented' ? 'Alugado' : a.propertyUse === 'other' ? 'Outro' + (a.propertyOther ? ': ' + a.propertyOther : '') : 'Não informada';
+    const sewage = a.sewageTreatment === 'unknown' ? 'Não informado' : optionText('sewageTreatment');
     return [
-      ['Documento do imóvel', a.propertyUse === 'own' ? 'Matrícula ou escritura' : a.propertyUse === 'rented' ? 'Contrato de locação e matrícula' : 'Definir conforme a posse do imóvel'],
+      ['Situação do imóvel', property],
+      ['Habite-se', status[a.habiteSe]],
+      ['Matrícula do imóvel', status[a.propertyDeed]],
+      ['Contrato de aluguel', status[a.leaseContract]],
+      ['Contrato de compra e venda', status[a.purchaseContract]],
       ['Projeto arquitetônico', status[a.archProject]],
       ['Projeto hidrossanitário', status[a.hydroProject]],
       ['Rede coletora de esgoto', optionText('sewerNetwork')],
-      ['Destino do esgoto', optionText('sewageTreatment')],
-      ...(a.operationStatus === 'licensed' ? [['Licença existente', [a.licenseType, a.licenseNumber, a.licenseExpiry && new Date(a.licenseExpiry + 'T00:00:00').toLocaleDateString('pt-BR')].filter(Boolean).join(' · ') || 'Não informada']] : [])
+      ['Destino do esgoto', sewage],
+      ...(a.sewageProject ? [['Projeto do sistema individual', optionText('sewageProject')]] : []),
+      ['Multa, notificação ou autuação ambiental', a.envPenalty === 'yes' ? 'Sim' + (a.envPenaltyDetails ? ': ' + a.envPenaltyDetails : '') : a.envPenalty === 'no' ? 'Não' : 'Não informado'],
+      ...(a.extraDocs ? [['Outros documentos', a.extraDocs]] : []),
+      ...(a.operationStatus === 'licensed' ? [['Licença existente', [a.licenseType, a.licenseOrgan, a.licenseNumber, a.licenseExpiry && new Date(a.licenseExpiry + 'T00:00:00').toLocaleDateString('pt-BR')].filter(Boolean).join(' · ') || 'Não informada']] : [])
     ];
   }
   function operationTraits(a) {
     const t = [];
     const yesNo = (k, label) => { if (a[k] === 'yes') t.push(label); };
-    yesNo('noise', 'Ruído relevante');
-    yesNo('emission', 'Emissão atmosférica');
-    yesNo('effluent', 'Efluente líquido de processo');
+    const typeOf = (k) => optionText(k) && a[k] ? ': ' + optionText(k).toLowerCase() : '';
+    if (a.unitTypes.length) t.push('Tipo de unidade: ' + a.unitTypes.map(v => form.querySelector(`input[name="unitType"][value="${v}"]`)?.parentElement.textContent.trim()).join(', ') + (a.unitTypeOther ? ` (${a.unitTypeOther})` : ''));
+    if (a.hasEquipment === 'yes') t.push('Máquinas e equipamentos' + (a.equipment ? ': ' + a.equipment : ''));
+    if (a.chemTreatment === 'yes') t.push('Tratamento químico de superfície' + typeOf('chemTreatmentType'));
+    yesNo('emission', 'Gera poeira, fumaça, vapor ou cheiro (emissão atmosférica)');
+    if (a.effluent === 'chemical') t.push('Efluente industrial (processo com produto químico)');
+    if (a.effluent === 'nochem') t.push('Efluente de processo sem produto químico');
     yesNo('hazWaste', 'Resíduos perigosos');
+    if (a.chemHandling === 'yes') t.push('Manipula produto químico' + typeOf('chemHandlingType'));
     if (a.heatProcess === 'heat') t.push('Forno ou caldeira');
     if (a.heatProcess === 'foundry') t.push('Fundição de metais');
     return t;
@@ -733,27 +886,31 @@
     if (a.beds != null) rows.push(['Leitos NL', fmt(a.beds, 0)]);
     return rows;
   }
+  function statusLabel(a) {
+    const base = optionTextRadio('operationStatus');
+    return a.operationStatus === 'licensed' && a.licenseAction ? `${base} · ${optionText('licenseAction')}` : base;
+  }
   function renderReport(r) {
     const a = r.data;
-    const statusText = optionTextRadio('operationStatus');
+    const statusText = statusLabel(a);
     const traits = operationTraits(a);
     $('resultContent').innerHTML = `
       <div class="result-hero"><div><div class="eyebrow" style="color:#80d0c2">Pré-enquadramento ambiental</div><h2>${esc(a.companyName || 'Empresa sem nome')}</h2><p>${esc(a.municipality || 'Município não informado')} · ${esc(statusText)} · Gerado em ${new Date(r.generatedAt).toLocaleString('pt-BR')}</p><div class="hero-chips"><span class="hero-chip">${r.items.length} atividade(s) analisada(s)</span><span class="hero-chip">AU(3): ${a.au3ha == null ? 'não informada' : fmt(a.au3ha, 4) + ' ha'}</span><span class="hero-chip">Órgão: ${esc(r.organText)}</span></div></div><div class="completion-ring"><div><strong>${r.completion}%</strong><small>respostas-chave</small></div></div></div>
-      <div class="stats"><div class="stat warn"><div class="stat-top">Licenciáveis <span>◷</span></div><strong>${r.counts.licensable}</strong><small>Atividades com código na lista</small></div><div class="stat"><div class="stat-top">Dependem <span>?</span></div><strong>${r.counts.depends}</strong><small>Código depende de resposta</small></div><div class="stat green"><div class="stat-top">Não listadas <span>✓</span></div><strong>${r.counts.unlisted}</strong><small>DANC provável</small></div><div class="stat"><div class="stat-top">Fora da base <span>↻</span></div><strong>${r.counts.outside}</strong><small>Conferir manualmente</small></div><div class="stat red"><div class="stat-top">Pendências <span>!</span></div><strong>${r.pendCount}</strong><small>Dados a confirmar</small></div></div>
+      <div class="stats"><div class="stat warn"><div class="stat-top">Licenciáveis <span>◷</span></div><strong>${r.counts.licensable + r.counts.probable}</strong><small>${r.counts.probable ? `${r.counts.probable} ainda a confirmar` : 'Atividades com código na lista'}</small></div><div class="stat${r.counts.consult ? ' consult' : ''}"><div class="stat-top">Dependem <span>?</span></div><strong>${r.counts.depends + r.counts.consult}</strong><small>${r.counts.consult ? `${r.counts.consult} com a consultoria` : 'Código depende de resposta'}</small></div><div class="stat green"><div class="stat-top">Não listadas <span>✓</span></div><strong>${r.counts.unlisted}</strong><small>DANC provável</small></div><div class="stat"><div class="stat-top">Fora da base <span>↻</span></div><strong>${r.counts.outside}</strong><small>Conferir manualmente</small></div><div class="stat red"><div class="stat-top">Pendências <span>!</span></div><strong>${r.pendCount}</strong><small>Dados a confirmar</small></div></div>
       <div class="notice"><span class="notice-icon">ⓘ</span><div><strong>Leia como pré-enquadramento.</strong> Os códigos saem de uma base piloto da Res. CONSEMA 250/2024. Algumas faixas de porte estão incompletas. Confirme no texto oficial e com o órgão antes de orientar o cliente.</div></div>
       <div class="results-layout"><div>
         <div class="card"><div class="card-head"><div><h2>Resumo do empreendimento</h2><p>Um único órgão licencia o empreendimento: o competente para a atividade de maior impacto (art. 6º).</p></div></div><div class="card-body">
-          <div class="kv" style="margin-top:0"><div><span>Atividade de maior impacto</span><b>${r.top ? esc(r.top.code + ' · potencial geral ' + r.top.pot.geral) : '—'}</b></div><div><span>Órgão provável</span><b>${esc(r.organText)}</b></div><div class="full"><span>Caminho do processo</span><b style="font-weight:600">${esc(r.path)}</b></div>${r.license ? `<div class="full"><span>Licença existente</span><b style="font-weight:600">${esc(r.license.text)}</b></div>` : ''}</div>
+          <div class="kv" style="margin-top:0"><div><span>Atividade de maior impacto${r.topIsSuggestion ? ' (sugestão)' : ''}</span><b>${r.top ? esc(r.top.code + ' · potencial geral ' + r.top.pot.geral) : '—'}</b>${r.topIsSuggestion ? '<div class="band-text" style="margin-top:3px">Definição final pela consultoria.</div>' : ''}</div><div><span>Órgão provável</span><b>${esc(r.organText)}</b></div><div class="full"><span>Caminho do processo</span><b style="font-weight:600">${esc(r.path)}</b></div>${r.license ? `<div class="full"><span>Licença existente</span><b style="font-weight:600">${esc(r.license.text)}</b></div>` : ''}</div>
           ${r.general.length ? `<ul class="pend-list">${r.general.map(p => `<li>${esc(p)}</li>`).join('')}</ul>` : ''}
         </div></div>
-        <div class="card"><div class="card-head"><div><h2>Enquadramento por atividade</h2><p>Cada CNAE e cada atividade encontrada na descrição, com o código CONSEMA provável.</p></div><span class="section-tag">${r.items.length} itens</span></div><div class="card-body"><div class="legend"><span class="status review">Sujeita a licenciamento</span><span class="status info">Depende da operação</span><span class="status ok">DANC provável</span><span class="status neutral">Fora da base</span></div><div class="result-list">${r.items.map(itemHtml).join('') || '<p>Nenhuma atividade informada.</p>'}</div></div></div>
+        <div class="card"><div class="card-head"><div><h2>Enquadramento por atividade</h2><p>Cada CNAE e cada atividade encontrada na descrição, com o código CONSEMA provável.</p></div><span class="section-tag">${r.items.length} itens</span></div><div class="card-body"><div class="legend">${['licensable','probable','depends','consult'].map(k => `<span class="status ${KIND[k].cls}" title="${esc(KIND_HELP[k])}">${esc(KIND[k].text)}</span>`).join('')}<span class="status ok">DANC provável</span><span class="status neutral">Fora da base</span></div><p class="band-text" style="margin:0 0 6px">“Licenciável” só aparece quando nenhuma resposta pendente pode mudar o resultado. Com “não sei” em uma pergunta decisiva ou porte não determinado, o rótulo é “Provavelmente licenciável · confirmar”.</p><div class="result-list">${r.items.map(itemHtml).join('') || '<p>Nenhuma atividade informada.</p>'}</div></div></div>
       </div>
       <aside><div class="result-card"><h3>Próximas ações sugeridas</h3><ol class="todo">${nextSteps(r).slice(0, 7).map((s, i) => `<li><span class="todo-num">${i + 1}</span><span>${esc(s)}</span></li>`).join('')}</ol></div>
         <div class="result-card"><h3>Dados usados no porte</h3><ul class="info-list">${porteData(a).map(([l, v]) => `<li>${esc(l)}: <b>${esc(v)}</b></li>`).join('')}</ul></div>
         <div class="result-card"><h3>Características para o estudo e o orçamento</h3>${traits.length ? `<ul class="info-list">${traits.map(t => `<li>• ${esc(t)}</li>`).join('')}</ul>` : '<p style="font-size:12px;color:#7d8f9a;margin:0">Nenhuma característica adicional informada.</p>'}</div>
-        <div class="result-card"><h3>Preparação para orçamento</h3><ul class="info-list">${budgetDocs(a).map(([l, v]) => `<li>${esc(l)}: <b>${esc(v)}</b></li>`).join('')}</ul></div>
+        <div class="result-card"><h3>Documentos disponíveis</h3><ul class="info-list">${budgetDocs(a).map(([l, v]) => `<li>${esc(l)}: <b>${esc(v)}</b></li>`).join('')}</ul></div>
         <div class="result-card"><h3>Fontes para validação</h3><div class="source-list">${r.sources.map(s => `<a class="source-link" href="${esc(s.url)}" target="_blank" rel="noopener">↗ <div>${esc(s.name)}<span>Abrir referência</span></div></a>`).join('')}</div></div>
-        <div class="result-card" style="background:#fff9e9;border-color:#eadbb7"><h3 style="color:#76551c">Limites deste pré-enquadramento</h3><p style="font-size:11px;color:#7d6a49;margin:0;line-height:1.6">A base piloto cobre cerca de 60 códigos das Res. CONSEMA 250/2024 e 251/2024. As faixas de porte pequeno e grande estão incompletas e as correções da Res. 259/2024 não foram conferidas código a código. A habilitação dos municípios segue a lista da SEMAE atualizada até 26/08/2026. Não há consulta ao SinFAT.</p></div></aside></div>
+        <div class="result-card" style="background:#fff9e9;border-color:#eadbb7"><h3 style="color:#76551c">Limites deste pré-enquadramento</h3><p style="font-size:11px;color:#7d6a49;margin:0;line-height:1.6">A base piloto cobre cerca de 60 códigos das Res. CONSEMA 250/2024 e 251/2024. As faixas de porte pequeno e grande estão incompletas (nesses casos o porte aparece como “não determinado”) e as correções da Res. 259/2024 não foram conferidas código a código. A licença de cada código, que vem das Instruções Normativas do IMA, ainda não está na base. A habilitação dos municípios segue a lista da SEMAE atualizada até 26/08/2026. Não há consulta ao SinFAT nem à Receita Federal.</p></div></aside></div>
       <div class="footer-nav no-print" style="margin-top:18px"><div class="footer-left"><button class="btn" type="button" id="editDataBtn">← Editar dados</button></div><div class="footer-right"><button class="btn" type="button" id="exportJsonBtn">↓ Exportar JSON</button><button class="btn" type="button" id="exportMdBtn">↓ Exportar relatório .md</button><button class="btn primary" type="button" id="printBtn">Imprimir / PDF ↗</button></div></div>`;
     $('editDataBtn').addEventListener('click', () => showStep(1));
     $('exportJsonBtn').addEventListener('click', () => download('enquadramento-' + slug(a.companyName) + '.json', JSON.stringify(r, null, 2), 'application/json;charset=utf-8'));
@@ -768,7 +925,7 @@
   function download(filename, content, type) { const blob = new Blob([content], {type}); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = filename; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
   function reportMarkdown(r) {
     const a = r.data;
-    const lines = [`# Pré-enquadramento ambiental — ${a.companyName || 'Empresa sem nome'}`, '', `- **Município:** ${a.municipality || 'Não informado'}`, `- **CNPJ:** ${a.cnpj || 'Não informado'}`, `- **Situação:** ${optionTextRadio('operationStatus')}`, `- **CNAEs:** ${a.cnaes.join('; ') || 'Nenhum'}`, `- **Área útil AU(3):** ${a.areaM2 == null ? 'Não informada' : fmt(a.areaM2) + ' m² (' + fmt(a.au3ha, 4) + ' ha)'}`, `- **Gerado em:** ${new Date(r.generatedAt).toLocaleString('pt-BR')}`, `- **Quadro geral:** ${r.counts.licensable} licenciável(is), ${r.counts.depends} dependem de resposta, ${r.counts.unlisted} não listada(s), ${r.counts.outside} fora da base, ${r.pendCount} pendência(s); ${r.completion}% das respostas-chave preenchidas`, '', '> **Atenção:** pré-enquadramento gerado a partir das respostas e de uma base piloto da Res. CONSEMA 250/2024. Não substitui o texto oficial, parecer técnico, licença, DANC ou CCA.', '', '## Resumo do empreendimento', '', `- **Atividade de maior impacto:** ${r.top ? r.top.code + ' (potencial geral ' + r.top.pot.geral + ')' : '—'}`, `- **Órgão provável:** ${r.organText}`, `- **Caminho do processo:** ${r.path}`];
+    const lines = [`# Pré-enquadramento ambiental — ${a.companyName || 'Empresa sem nome'}`, '', `- **Município:** ${a.municipality || 'Não informado'}`, `- **CNPJ:** ${a.cnpj || 'Não informado'}`, ...a.extraCnpjs.map(e => `- **Outro CNPJ no local:** ${[e.name, e.cnpj].filter(Boolean).join(' · ') || 'Não identificado'} — CNAEs: ${e.cnaes.join('; ') || 'nenhum'}`), `- **Situação:** ${statusLabel(a)}`, ...(a.operationStatus === 'other' && a.operationOther ? [`- **Situação descrita:** ${a.operationOther}`] : []), `- **CNAEs:** ${a.cnaes.join('; ') || 'Nenhum'}`, `- **Área útil AU(3):** ${a.areaM2 == null ? 'Não informada' : fmt(a.areaM2) + ' m² (' + fmt(a.au3ha, 4) + ' ha)'}`, `- **Gerado em:** ${new Date(r.generatedAt).toLocaleString('pt-BR')}`, `- **Quadro geral:** ${r.counts.licensable} licenciável(is), ${r.counts.probable} provavelmente licenciável(is), ${r.counts.depends} dependem de resposta, ${r.counts.consult} com a consultoria, ${r.counts.unlisted} não listada(s), ${r.counts.outside} fora da base, ${r.pendCount} pendência(s); ${r.completion}% das respostas-chave preenchidas`, '', '> **Atenção:** pré-enquadramento gerado a partir das respostas e de uma base piloto da Res. CONSEMA 250/2024. Não substitui o texto oficial, parecer técnico, licença, DANC ou CCA.', '', '## Resumo do empreendimento', '', `- **Atividade de maior impacto${r.topIsSuggestion ? ' (sugestão; definição final pela consultoria)' : ''}:** ${r.top ? r.top.code + ' (potencial geral ' + r.top.pot.geral + ')' : '—'}`, `- **Órgão provável:** ${r.organText}`, `- **Caminho do processo:** ${r.path}`];
     if (r.license) lines.push(`- **Licença existente:** ${r.license.text}`);
     r.general.forEach(g => lines.push(`- ${g}`));
     lines.push('', '## Enquadramento por atividade');
@@ -777,14 +934,14 @@
       if (i.reason) lines.push(`- ${i.reason}`);
       (i.opts || []).forEach(o => {
         if (!o.code) { lines.push(`- ${o.cond ? '**' + o.cond + ':** ' : ''}Não consta da lista (DANC provável). ${o.unlisted}`); return; }
-        lines.push(`- ${o.cond ? '**' + o.cond + ':** ' : ''}**${o.code}** — ${o.desc}`, `  - Potencial poluidor: ar ${o.pot.ar}, água ${o.pot.agua}, solo ${o.pot.solo}, geral ${o.pot.geral}`, `  - ${o.paramLabel}: ${o.param === 'UNICO' ? '—' : o.porte.value != null ? fmt(o.porte.value, o.digits) + ' ' + o.unit : 'não informado'} · ${o.porte.label}`, `  - Enquadramento: ${o.outcome}`, `  - Órgão: ${o.organ.text}. ${o.organ.detail}`, `  - Faixas na base piloto: ${o.porte.bandText}`);
+        lines.push(`- ${o.cond ? '**' + o.cond + ':** ' : ''}**${o.code}** — ${o.desc}`, `  - Potencial poluidor: ar ${o.pot.ar}, água ${o.pot.agua}, solo ${o.pot.solo}, geral ${o.pot.geral}`, `  - ${o.paramLabel}: ${o.param === 'UNICO' ? '—' : o.porte.value != null ? fmt(o.porte.value, o.digits) + ' ' + o.unit : 'não informado'} · ${o.porte.label}`, `  - Modalidade e estudo (pelo porte): ${o.outcome}`, `  - Licença (IN do IMA): ${o.license}`, `  - Órgão: ${o.organ.text}. ${o.organ.detail}`, `  - Faixas na base piloto: ${o.porte.bandText}`);
         if (o.note) lines.push(`  - ${o.note}`);
       });
       if (i.note) lines.push(`- ${i.note}`);
       i.pend.forEach(p => lines.push(`- [ ] ${p}`));
     });
     const traits = operationTraits(a);
-    lines.push('', '## Próximas ações', ...nextSteps(r).map((s, i) => `${i + 1}. ${s}`), '', '## Dados usados no porte', ...porteData(a).map(([l, v]) => `- **${l}:** ${v}`), '', '## Características para o estudo e o orçamento', ...(traits.length ? traits.map(t => `- ${t}`) : ['- Nenhuma característica adicional informada.']), '', '## Preparação para orçamento', ...budgetDocs(a).map(([l, v]) => `- **${l}:** ${v}`), '', '## Fontes', ...r.sources.map(s => `- [${s.name}](${s.url})`), '', '---', 'Relatório gerado pelo protótipo Licença Clara com as respostas informadas. Nenhuma informação foi validada junto a órgão público.');
+    lines.push('', '## Próximas ações', ...nextSteps(r).map((s, i) => `${i + 1}. ${s}`), '', '## Dados usados no porte', ...porteData(a).map(([l, v]) => `- **${l}:** ${v}`), '', '## Características para o estudo e o orçamento', ...(traits.length ? traits.map(t => `- ${t}`) : ['- Nenhuma característica adicional informada.']), '', '## Documentos disponíveis', ...budgetDocs(a).map(([l, v]) => `- **${l}:** ${v}`), '', '## Fontes', ...r.sources.map(s => `- [${s.name}](${s.url})`), '', '---', 'Relatório gerado pelo protótipo Licença Clara com as respostas informadas. Nenhuma informação foi validada junto a órgão público.');
     return lines.join('\n');
   }
 
@@ -796,27 +953,57 @@
     [...form.elements].forEach(el => {
       if (!el.name) return;
       if (el.type === 'radio') { if (el.checked) data[el.name] = el.value; }
+      else if (el.type === 'checkbox') { (data[el.name] ||= []); if (el.checked) data[el.name].push(el.value); }
       else data[el.name] = el.value;
     });
     data._savedAt = new Date().toISOString();
     return data;
   }
+  // Rascunhos salvos antes da rodada 2 de feedback usam valores que mudaram de nome.
+  function migrate(data) {
+    const d = {...data};
+    if (d.operationStatus === 'new') d.operationStatus = 'install';
+    if (['septicFilter', 'own'].includes(d.sewageTreatment)) d.sewageTreatment = 'individual';
+    if (typeof d.unitType === 'string') d.unitType = d.unitType ? [d.unitType] : [];
+    if (d.effluent === 'yes') d.effluent = 'unknown';
+    if (d.equipment && !d.hasEquipment) d.hasEquipment = 'yes';
+    delete d.noise;
+    return d;
+  }
   function restore(data) {
     if (!data) return;
-    Object.entries(data).forEach(([key, value]) => {
+    Object.entries(migrate(data)).forEach(([key, value]) => {
       if (key.startsWith('_')) return;
       const el = form.elements[key];
       if (!el) return;
-      if (el instanceof RadioNodeList) [...el].forEach(r => r.checked = r.value === value);
+      const group = el instanceof RadioNodeList ? [...el] : [el];
+      if (group[0].type === 'checkbox') group.forEach(c => c.checked = [].concat(value).includes(c.value));
+      else if (group[0].type === 'radio') group.forEach(r => r.checked = r.value === value);
       else el.value = value;
     });
   }
   function saveDraft() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot())); } catch (e) {} }
   function updateConditionals() {
     document.querySelectorAll('[data-show-when]').forEach(el => {
-      const visible = el.dataset.showWhen.split(';').some(cond => { const [name, values] = cond.split(':'); return values.split('|').includes(val(name)); });
+      const visible = el.dataset.showWhen.split(';').some(cond => {
+        const [name, values] = cond.split(':');
+        const current = isCheckGroup(name) ? vals(name) : [val(name)];
+        return values.split('|').some(v => current.includes(v));
+      });
       el.classList.toggle('hidden', !visible);
     });
+    // Parâmetros de porte menos comuns (NV, QMR) só aparecem quando uma atividade identificada os usa.
+    let needed = new Set();
+    try { needed = new Set(analyze(collect()).items.flatMap(i => (i.opts || []).filter(o => o.code).map(o => o.param))); } catch (e) {}
+    document.querySelectorAll('[data-param]').forEach(el => el.classList.toggle('hidden', !needed.has(el.dataset.param)));
+    // CNPJ obrigatório para quem já opera ou já tem licença; opcional para quem ainda vai abrir a empresa.
+    const cnpjRequired = SITUATIONS_WITH_CNPJ.includes(val('operationStatus'));
+    $('cnpjReq').textContent = cnpjRequired ? '*' : '';
+    $('cnpjReq').className = cnpjRequired ? '' : 'optional';
+    if (!cnpjRequired) $('cnpjReq').textContent = '(opcional para quem ainda vai abrir a empresa)';
+    $('cnpjHelper').textContent = cnpjRequired ? 'Obrigatório para quem já opera ou já tem licença: a consultoria confere os CNAEs cadastrados com a operação descrita.' : 'Se já houver CNPJ, informe: a consultoria confere os CNAEs cadastrados com a operação descrita.';
+    const count = Number(val('extraCnpjCount')) || 1;
+    $('addCnpjBtn').classList.toggle('hidden', count >= EXTRA_SLOTS.length);
     // Marca o campo numérico que não pôde ser lido (texto, valor negativo).
     NUM_FIELDS.forEach(n => { const bad = val(n) !== '' && num(n) == null; if (bad) $(n).setAttribute('aria-invalid', 'true'); else $(n).removeAttribute('aria-invalid'); $(n).title = bad ? 'Valor não reconhecido: use números, como 1.500 ou 0,5' : ''; });
     const sum = areaSum();
@@ -841,11 +1028,21 @@
     window.scrollTo({top:0, behavior:'smooth'});
   }
   const REQUIRED = {1:['companyName','municipality'], 2:['address'], 3:['mainCnae','activityDescription']};
+  const cnpjDigits = (v) => String(v || '').replace(/\D/g, '');
+  // Primeiro campo obrigatório que falta (ou CNPJ incompleto) na etapa; null se a etapa está completa.
+  function firstInvalid(step) {
+    const ids = [...(REQUIRED[step] || []), ...(step === 1 && SITUATIONS_WITH_CNPJ.includes(val('operationStatus')) ? ['cnpj'] : [])];
+    const missing = ids.find(id => !val(id));
+    if (missing) return missing;
+    if (step === 1 && val('cnpj') && cnpjDigits(val('cnpj')).length !== 14) return 'cnpj';
+    return null;
+  }
   function validate(step) {
-    for (const id of REQUIRED[step] || []) {
-      const el = $(id); if (!el.value.trim()) { el.focus(); el.scrollIntoView({behavior:'smooth', block:'center'}); el.style.borderColor = '#bf6158'; setTimeout(() => el.style.borderColor = '', 1800); return false; }
-    }
-    return true;
+    const id = firstInvalid(step);
+    if (!id) return true;
+    const el = $(id); el.focus(); el.scrollIntoView({behavior:'smooth', block:'center'}); el.style.borderColor = '#bf6158'; setTimeout(() => el.style.borderColor = '', 1800);
+    if (id === 'cnpj') $('cnpjHelper').textContent = val('cnpj') ? 'CNPJ incompleto: informe os 14 dígitos.' : 'Obrigatório para quem já opera ou já tem licença: a consultoria confere os CNAEs cadastrados com a operação descrita.';
+    return false;
   }
 
   $('nextBtn').addEventListener('click', () => {
@@ -854,7 +1051,7 @@
   });
   // O resultado é sempre recalculado com o formulário atual, para nunca mostrar um relatório antigo.
   function goToResult() {
-    for (let s = 1; s <= 3; s++) { if (REQUIRED[s].some(id => !val(id))) { showStep(s); validate(s); return; } }
+    for (let s = 1; s <= 3; s++) { if (firstInvalid(s)) { showStep(s); validate(s); return; } }
     saveDraft(); latestReport = generateReport(); renderReport(latestReport); showStep(5);
   }
   $('backBtn').addEventListener('click', () => showStep(currentStep - 1));
@@ -863,10 +1060,12 @@
   form.addEventListener('input', () => { updateConditionals(); saveDraft(); });
   form.addEventListener('change', () => { updateConditionals(); saveDraft(); });
   const emptyResult = $('resultContent').firstElementChild;
-  $('resetBtn').addEventListener('click', () => { if (!confirm('Limpar todos os dados deste enquadramento e apagar o rascunho salvo neste navegador?')) return; form.reset(); try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} latestReport = null; $('resultContent').replaceChildren(emptyResult); updateConditionals(); showStep(1); });
+  // Campo oculto: form.reset() não volta o valor dele ao padrão, por isso é zerado aqui.
+  $('resetBtn').addEventListener('click', () => { if (!confirm('Limpar todos os dados deste enquadramento e apagar o rascunho salvo neste navegador?')) return; form.reset(); $('extraCnpjCount').value = '1'; try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} latestReport = null; $('resultContent').replaceChildren(emptyResult); updateConditionals(); showStep(1); });
+  $('addCnpjBtn').addEventListener('click', () => { $('extraCnpjCount').value = String(Math.min(EXTRA_SLOTS.length, (Number(val('extraCnpjCount')) || 1) + 1)); updateConditionals(); saveDraft(); });
   try { const draft = localStorage.getItem(STORAGE_KEY); if (draft) restore(JSON.parse(draft)); } catch (e) {}
   // Máscara visual do CNPJ, sem alterar os dígitos digitados.
-  $('cnpj').addEventListener('input', e => { let x = e.target.value.replace(/\D/g, '').slice(0, 14); if (x.length > 12) x = x.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2}).*/, '$1.$2.$3/$4-$5'); else if (x.length > 8) x = x.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,4}).*/, '$1.$2.$3/$4'); else if (x.length > 5) x = x.replace(/^(\d{2})(\d{3})(\d{0,3}).*/, '$1.$2.$3'); else if (x.length > 2) x = x.replace(/^(\d{2})(\d{0,3}).*/, '$1.$2'); e.target.value = x; saveDraft(); });
+  document.querySelectorAll('.cnpj-input').forEach(input => input.addEventListener('input', e => { let x = e.target.value.replace(/\D/g, '').slice(0, 14); if (x.length > 12) x = x.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2}).*/, '$1.$2.$3/$4-$5'); else if (x.length > 8) x = x.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,4}).*/, '$1.$2.$3/$4'); else if (x.length > 5) x = x.replace(/^(\d{2})(\d{3})(\d{0,3}).*/, '$1.$2.$3'); else if (x.length > 2) x = x.replace(/^(\d{2})(\d{0,3}).*/, '$1.$2'); e.target.value = x; saveDraft(); }));
   updateConditionals();
   showStep(1);
 })();
